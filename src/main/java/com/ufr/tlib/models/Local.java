@@ -57,4 +57,8 @@ public class Local {
 
     @OneToMany(mappedBy = "local", fetch = FetchType.LAZY)
     private List<Image> images;
+
+    @OneToOne(mappedBy = "local")
+    @JoinColumn(name = "address_id")
+    private Address adresse;
 }
