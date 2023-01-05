@@ -39,6 +39,8 @@ public class User {
     @Email(message = "Invalide email")
     private String email; // Adresse email valide (format X@Y.Z)
 
+
+
     @Column
     @NotBlank(message = "This field is required")
     private String lastname;
@@ -59,6 +61,9 @@ public class User {
     @OneToMany(mappedBy = "client")
     private List<RDV> RDVs;
 
+    @OneToOne(mappedBy = "local")
+    @JoinColumn(name = "address_id")
+    private Address adresse;
     @ManyToOne
     private Role role;
 
