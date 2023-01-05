@@ -36,12 +36,21 @@
               <td th:utext="${local.name}"></td>
               <td th:utext="${local.address}"></td>
               <td >
-                <a th:href="${'/admin/local/bloquer/'+local.id}" id="edit">
-                  <button type="button" class="btn btn-warning">Bloquer</button>
-                </a>
-                <a th:href="${'/admin/local/delete/'+local.id}" id="supprimer">
-                  <button type="button" class="btn btn-danger">Supprimer</button>
-                </a>
+                  <span th:if="${local.enabled} == true">
+                    <a th:href="${'/admin/local/bloquer/'+local.id}" id="edit">
+                        <button type="button" class="btn btn-warning">Bloquer</button>
+                    </a>
+                  </span>
+                  <span th:if="${local.enabled} == false" >
+                      <a th:href="${'/admin/local/debloquer/'+local.id}" id="edit">
+                        <button type="button" class="btn btn-warning">Débloquer</button>
+                      </a>
+                  </span>
+                  <span>
+                    <a th:href="${'/admin/local/delete/'+local.id}" id="supprimer">
+                      <button type="button" class="btn btn-danger">Supprimer</button>
+                    </a>
+                  </span>
               </td>
             </tr>
         </tbody>

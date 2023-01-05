@@ -57,4 +57,16 @@ public class Local {
 
     @OneToMany(mappedBy = "local", fetch = FetchType.LAZY)
     private List<Image> images;
+
+    public User getManager() {
+        return manager;
+    }
+
+    public void setEnabled(boolean b){
+        enabled = b;
+    }
+
+    public void setManager(User manager) {
+        this.manager = manager;
+    }
 }

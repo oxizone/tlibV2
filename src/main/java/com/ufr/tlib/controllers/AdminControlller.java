@@ -2,6 +2,7 @@ package com.ufr.tlib.controllers;
 
 import com.ufr.tlib.dataManagementServices.ILocalService;
 import com.ufr.tlib.dataManagementServices.IUserService;
+import com.ufr.tlib.excepetions.LocalNotFoundException;
 import com.ufr.tlib.excepetions.UserNotFoundException;
 import com.ufr.tlib.models.Local;
 import com.ufr.tlib.models.Service;
@@ -32,7 +33,16 @@ public class AdminControlller {
     }
 
     @GetMapping("/local/bloquer/{id}")
-    public String bloquerLocal(Model model) throws UserNotFoundException{
-        
+    public String bloquerLocal(@PathVariable("id") long id, Model model) throws UserNotFoundException, LocalNotFoundException {
+        localService.disableLocal(localService.getLocalById(id));
+        model.addAttribute("locals",localService.getListLocal());
+        return root + "liste_local";
+    }
+
+    @GetMapping("/local/debloquer/{id}")
+    public String debloquerLocal(@PathVariable("id") long id, Model model) throws UserNotFoundException, LocalNotFoundException {
+        localService.enableLocal(localService.getLocalById(id));
+        model.addAttribute("locals",localService.getListLocal());
+        return root + "liste_local";
     }
 }
