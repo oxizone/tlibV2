@@ -1,0 +1,68 @@
+<navbar th:fragment="user_navbar">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <!-- Container wrapper -->
+        <div class="container">
+            <!-- Navbar brand -->
+            <a class="navbar-brand me-2" href="/">
+                <img
+                        th:src="@{/image/croissantlogo.png}"
+                        height="35"
+                        alt="MDB Logo1"
+                        loading="lazy"
+                        style="margin-top: -1px"
+                />
+            </a>
+
+            <!-- Toggle button -->
+            <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-mdb-toggle="collapse"
+                    data-mdb-target="#navbarButtonsExample2"
+                    aria-controls="navbarButtonsExample2"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+            >
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarButtonsExample2">
+                <!-- Left links -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" id="home" href="/user/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="mercredi" href="/user/locaux"
+                        >Liste des locaux</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="mercredi" href="/user/rdvs"
+                        >Liste des RDVs</a
+                        >
+                    </li>
+                </ul>
+                <!-- Left links -->
+
+                <div class="d-flex align-items-center">
+                    <a th:href="@{/profil}" id="profil">
+                        <button type="button" class="btn btn-link px-3 me-2">
+                            Profil
+                        </button>
+                    </a>
+                    <a th:href="@{/logout}" id="logout">
+                        <button type="button" class="btn btn-primary me-3">
+                            logout
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <!-- Collapsible wrapper -->
+        </div>
+        <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+</navbar>

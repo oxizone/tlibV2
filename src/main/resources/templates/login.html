@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head >
+    <link th:href="@{/css/login.css}" rel="stylesheet" />
+    <span th:replace="layouts/head :: head"></span>
+    <title>Login</title>
+</head>
+<body>
+
+<section class="vh-100">
+    <span th:replace="layouts/navbar :: accueil_navbar"></span>
+            <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1 pt-3">
+                <form name="f" th:action="@{/login}" method="post">
+                    <!-- Message-->
+                    <div class="alert alert-danger" data-th-if="${param.error != null    && session.SPRING_SECURITY_LAST_EXCEPTION != null}"
+                    >
+                        <div data-th-if="${session.SPRING_SECURITY_LAST_EXCEPTION.message == 'Bad credentials'}">
+                            Nom d'utilisateur ou mot de passe erroné
+                        </div>
+                        <div data-th-if="${session.SPRING_SECURITY_LAST_EXCEPTION.message == 'User is disabled'}">
+                            Compte désactivé
+                        </div>
+                    </div>
+
+                    <div th:if="${param.logout}" class="alert alert-success">
+                        You have been logged out.
+                    </div>
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <input name="username" type="text" id="form1Example13" class="form-control form-control-lg" />
+                        <label class="form-label" for="form1Example13">Username</label>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-4">
+                        <input name="password" type="password" id="form1Example23" class="form-control form-control-lg" />
+                        <label class="form-label" for="form1Example23">Password</label>
+                    </div>
+
+                    <div class="d-flex justify-content-around align-items-center mb-4">
+                        <!-- text -->
+                        <div >
+                            <label> Vous n'avez pas de compte? </label>
+                        </div>
+                        <a th:href="@{/signup}">S'inscrire</a>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Connect</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<span th:replace="layouts/foot :: foot"></span>
+</body>
+
+</html>

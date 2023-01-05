@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link  rel="stylesheet" />
+    <span th:replace="layouts/head :: head"></span>
+    <title>Create account</title>
+</head>
+<body>
+<div class="container py-5 h-100 w-50">
+    <form name="f" th:action="@{/createUser}" method="post" th:object="${user}" novalidate>
+        <!-- 2 column grid layout with text inputs for the first and last names -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="form-outline">
+                    <label class="form-label" for="form3Example1">Prénom</label>
+                    <input th:field="*{firstname}" type="text" id="form3Example1" class="form-control" />
+                    <div class="erreur" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">prenom
+                        Error</div>
+
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-outline">
+                    <label class="form-label" for="form3Example2">Nom</label>
+                    <input th:field="*{lastname}" type="text" id="form3Example2" class="form-control" />
+                    <div class="erreur" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">nom
+                        Error</div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Email input -->
+        <div class="form-outline mb-4">
+            <label class="form-label" for="form3Example3">Email address</label>
+            <input th:field="*{email}" type="email" id="form3Example3" class="form-control" />
+            <div class="erreur" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email
+                Error</div>
+
+        </div>
+
+        <!-- Username input -->
+        <div class="form-outline mb-4">
+            <label class="form-label" for="form3Example4">Identifiant</label>
+            <input th:field="*{username}" type="text" id="form3Example4" class="form-control" />
+            <div class="erreur" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username
+                Error</div>
+
+        </div>
+
+        <!-- Password input -->
+        <div class="form-outline mb-4">
+            <label class="form-label" for="form3Example5">Mot de passe</label>
+            <input th:field="*{password}" type="password" id="form3Example5" class="form-control" />
+            <div class="erreur" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password
+                Error</div>
+
+        </div>
+
+        <!-- Username input -->
+        <div class="form-outline mb-4">
+            <label class="form-label" for="form3Example4">Numéro de téléphone</label>
+            <input th:field="*{phone}" type="tel" id="form3Example6" class="form-control" />
+            <div class="erreur" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Numéro de téléphone
+                Error</div>
+
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Incription</button>
+
+    </form>
+</div>
+
+</body>
+
+</html>

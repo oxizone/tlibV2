@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <span th:replace="layouts/head :: head"></span>
+    <title>Modifiers</title>
+</head>
+<body>
+    <div class="container">
+      <form th:action="@{/manager/local/update}" method="post" th:object="${local}">
+        <div class="mb-3">
+            <input th:field="*{id}" hidden/>
+            <input th:field="*{manager.id}" hidden/>
+          <label for="nom" class="form-label">Nom</label>
+          <input type="text" class="form-control" id="nom" th:field="*{name}" placeholder="">
+          <div class="erreur" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name
+            Error</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="Adresse" class="form-label">Adresse</label>
+          <input type="text" class="form-control" th:field="*{address}" placeholder="" disabled>
+          <input type="text" class="form-control" id="Adresse" th:field="*{address}" placeholder="" hidden>
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea class="form-control" id="description" th:field="*{description}" rows="3"></textarea>
+          <div class="erreur" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">description
+            Error</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="phoneNumber" class="form-label">Numero de telephone</label>
+          <input type="number" class="form-control" id="phoneNumber" th:field="*{phoneNumber}" placeholder="">
+          <div class="erreur" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">phoneNumber
+            Error</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="email" name="email" th:field="*{email}" placeholder="name@example.com">
+          <div class="erreur" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email
+            Error</div>
+        </div>
+
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="service">Service</label>
+          <select class="form-select" id="service" name="service" th:field="*{service}">
+            <option th:each="service : ${services}"
+                    th:value="${service}"
+                    th:text="${service}">
+            </option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mb-4">Modifier</button>
+      </form>
+    </div>
+
+
+    <span th:replace="layouts/foot :: foot"></span>
+</body>
+</html>

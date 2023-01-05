@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <span th:replace="layouts/head :: head"></span>
+    <title>Liste des locaux</title>
+</head>
+<body>
+    <div data-th-if="${param.updateSuccess!= null}" class="alert  alert-success fade show alert-dismissible" role="alert" data-mdb-color="success" id="customxD" bis_skin_checked="1">
+        <strong>Le local est modifié </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div data-th-if="${param.deleteSuccess!= null}" class="alert  alert-success fade show alert-dismissible" role="alert" data-mdb-color="success" id="customxD2" bis_skin_checked="1">
+        <strong>Le local est supprimé </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div data-th-if="${param.error!= null}" class="alert  alert-success fade show alert-dismissible" role="alert" data-mdb-color="success" id="customxD3" bis_skin_checked="1">
+        <strong>Erreur </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="container">
+
+      <h1 class="pt-5">Tous mes locaux</h1>
+
+      <table class="table table-striped table-sm align-middle">
+        <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Adresse</th>
+          <th>Action</th>
+        </tr>
+        <thead>
+        <tbody>
+            <tr th:each="local : ${locals}">
+              <td th:utext="${local.name}"></td>
+              <td th:utext="${local.address}"></td>
+              <td >
+                <a th:href="${'/manager/local/'+local.id}" id="view">
+                  <button type="button" class="btn btn-success">plus</button>
+                </a>
+                <a th:href="${'/manager/local/edit/'+local.id}" id="edit">
+                  <button type="button" class="btn btn-warning">Modifier</button>
+                </a>
+                <a th:href="${'/manager/local/delete/'+local.id}" id="supprimer">
+                  <button type="button" class="btn btn-danger">supprimer</button>
+                </a>
+              </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+    <span th:replace="layouts/foot :: foot"></span>
+</body>
+</html>
