@@ -28,8 +28,21 @@ public class TlibApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Role managerRole = Role.builder().roleName("ROLE_MANAGER").build();
+
 		Role userRole = Role.builder().roleName("ROLE_USER").build();
+		Role managerRole = Role.builder().roleName("ROLE_MANAGER").build();
+		Role adminRole = Role.builder().roleName("ROLE_ADMIN").build();
+
+		User user = User.builder()
+				.firstname("user")
+				.lastname("userlastname")
+				.email("user@gmail.com")
+				.username("testuser")
+				.password("test")
+				.phone("0665653263")
+				.enabled(true)
+				.role(userRole)
+				.build();
 
 		User manager = User.builder()
 				.firstname("amine")
@@ -42,15 +55,15 @@ public class TlibApplication implements CommandLineRunner {
 				.role(managerRole)
 				.build();
 
-		User user = User.builder()
-				.firstname("user")
-				.lastname("userlastname")
-				.email("user@gmail.com")
-				.username("testuser")
-				.password("test")
-				.phone("0665653263")
+		User admin = User.builder()
+				.firstname("Prenom")
+				.lastname("Nom")
+				.email("admin@gmail.com")
+				.username("admin")
+				.password("admin")
+				.phone("0102030405")
 				.enabled(true)
-				.role(userRole)
+				.role(adminRole)
 				.build();
 
 
@@ -75,10 +88,12 @@ public class TlibApplication implements CommandLineRunner {
 				.build();
 
 
-		roleRepository.save(managerRole);
 		roleRepository.save(userRole);
-		userService.addUser(manager);
+		roleRepository.save(managerRole);
+		roleRepository.save(adminRole);
 		userService.addUser(user);
+		userService.addUser(manager);
+		userService.addUser(admin);
 
 
 		localService.addLocal(sallonCoiffure,manager.getUsername());
