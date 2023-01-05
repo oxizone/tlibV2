@@ -71,4 +71,16 @@ public class LocalService implements ILocalService {
     public void updateLocal(Local local) {
         localDao.save(local);
     }
+
+    @Override
+    public void disableLocal(Local local) {
+        local.setEnabled(false);
+        localDao.save(local);
+    }
+
+    @Override
+    public void enableLocal(Local local) {
+        local.setEnabled(true);
+        localDao.save(local);
+    }
 }

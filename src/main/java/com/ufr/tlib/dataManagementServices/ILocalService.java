@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface ILocalService {
-
     public Local getLocalById(long id) throws LocalNotFoundException;
     public void addLocal(Local local, String username) throws UserNotFoundException;
 
@@ -20,7 +19,9 @@ public interface ILocalService {
     public Page<Local> getLocalPageByKeywordAndServiceType(String keyword, Service service, int page, int size);
     public List<Local> getListLocalByManager(String username) throws UserNotFoundException;
     public Local getLocal(long id);
-
     public void updateLocal(Local local);
 
+    public void disableLocal(Local local);
+
+    public void enableLocal(Local local);
 }
