@@ -53,7 +53,7 @@ public class User {
     @NotBlank(message = "This field is required")
     private String phone;
 
-    private boolean enabled = false;
+    private boolean enabled = true;
 
     @OneToMany(mappedBy = "manager")
     private List<Local> managedLocals;

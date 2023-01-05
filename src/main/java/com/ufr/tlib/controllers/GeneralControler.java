@@ -1,6 +1,7 @@
 package com.ufr.tlib.controllers;
 
 import com.ufr.tlib.dataManagementServices.IUserService;
+import com.ufr.tlib.excepetions.RoleNotFoundException;
 import com.ufr.tlib.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,7 @@ public class GeneralControler {
     }
 
     @PostMapping(value = "/createUser")
-    public String createUser(@ModelAttribute("user") @Valid User user, BindingResult result, Model model){ //@Valid
+    public String createUser(@ModelAttribute("user") @Valid User user, BindingResult result, Model model) throws RoleNotFoundException { //@Valid
         if (result.hasErrors()) {
             return CREATE_ACCOUNT_VIEW_NAME;
         }
