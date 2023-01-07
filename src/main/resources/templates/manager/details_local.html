@@ -2,13 +2,18 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
   <span th:replace="layouts/head :: head"></span>
   <title>Details</title>
 </head>
 <body>
 <div hidden class="alert alert-danger fade show alert-dismissible" role="alert" data-bs-color="danger" id="artisanNotFound" bis_skin_checked="1">
   <strong></strong>
-  <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<div hidden class="alert alert-success fade show  alert-dismissible" role="alert" data-bs-color="danger" id="succesAlert" bis_skin_checked="1">
+  <strong></strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 <div class="container">
   <div class="local shadow-lg p-3 mb-5 bg-body rounded">
@@ -84,7 +89,9 @@
 
                 </td>
                 <td class='tdAction'>
-                    <button class='btn btn-success btn-sm btn-edit' > Edit </button>  <button class='btn btn-danger btn-sm' > Delete </button>
+                    <button class='btn btn-success btn-sm btn-edit' > Modifier </button>
+                    <button type="button" class="btn btn-sm btn-secondary showModal" data-bs-toggle="modal" data-bs-target="#absence" >Désactiver</button>
+                    <button class='btn btn-danger btn-sm' > Supprimer </button>
                 </td>
 
             </tr>
@@ -95,7 +102,43 @@
   </div>
 </div>
 
+<!-------------------------- MODAL ---------------------------->
+<div class="modal fade" id="absence" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div hidden class="alert alert-danger fade show alert-dismissible" role="alert" data-bs-color="danger" id="DateError" bis_skin_checked="1">
+          <strong></strong>
+          <button type="button" class="btn-close"  aria-label="Close"></button>
+        </div>
+        <form>
+          <div class="form-group">
+            <label for="startDate" class="col-form-label">Date début:</label>
+            <input type="text" class="form-control" id="startDate">
+          </div>
+          <div class="form-group">
+            <label for="endDate" class="col-form-label">Date de retour:</label>
+            <input type="text" class="form-control" id="endDate">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="addAbsence" class="btn btn-primary">Ajouter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+
 <script>
   var emptyRow = "<tr><td colspan='4' class='text-center'> Pas d'artisans</td></tr>";
   var emptyNewRow = "<tr class='trNewRow'>";
@@ -110,11 +153,11 @@
   emptyNewRow = emptyNewRow + "        <input type='text' class='form-control txtAvatar' placeholder='Entrer avatar'/>";
   emptyNewRow = emptyNewRow + "    </td>";
   emptyNewRow = emptyNewRow + "    <td class='tdAction'>";
-  emptyNewRow = emptyNewRow + "        <button class='btn btn-sm btn-success btn-save'> Save</button>";
-  emptyNewRow = emptyNewRow + "        <button class='btn btn-sm btn-success btn-cancel'> Cancel</button>";
+  emptyNewRow = emptyNewRow + "        <button class='btn btn-sm btn-success btn-save'> Enregistrer</button>";
+  emptyNewRow = emptyNewRow + "        <button class='btn btn-sm btn-success btn-cancel'> Annuler</button>";
   emptyNewRow = emptyNewRow + "    </td>";
   emptyNewRow = emptyNewRow + "</tr>";
-  var rowButtons ="<button class='btn btn-success btn-sm btn-edit' > Edit </button>  <button class='btn btn-danger btn-sm' > Delete </button> ";
+  var rowButtons ="<button class='btn btn-success btn-sm btn-edit' > Modifier </button> <button type='button' class='btn btn-sm btn-secondary' >Désactiver</button> <button class='btn btn-danger btn-sm' > Supprimer </button> ";
   var rowUpdateButtons ="<button class='btn btn-success btn-sm btn-save' > Update </button> ";
 
 
@@ -233,7 +276,82 @@
       $(this).parent().parent().find(".tdAction").html(rowUpdateButtons);
 
     });
+
+    $("#startDate").datepicker({
+      minDate: new Date(),
+      dateFormat: "dd-mm-yy"
+    });
+    $("#endDate").datepicker({
+      minDate: new Date(),
+      dateFormat: "dd-mm-yy"
+    });
+
+    $('.showModal').on('click', function (event) {
+      $("#absence #DateError").attr("hidden",true);
+      $("#startDate").val('');
+      $("#endDate").val('');
+      //var button = $(event.relatedTarget); // Button that triggered the modal
+      var name = $(this).parent().parent().find(".tdFName").html() + " " + $(this).parent().parent().find(".tdLName").html(); // Extract info from data-* attributes
+
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $('#absence');
+      modal.find('.modal-title').text('Durée d\'absence de ' + name);
+
+      modal.find('.modal-title').attr('id',$(this).parent().parent().attr('id'));
+    });
+
+
+    $('#addAbsence').on('click', function () {
+
+      let artisanId =  $('#absence').find('.modal-title').attr("id");
+
+
+      let start = $("#startDate").datepicker("getDate");
+      let end = $("#endDate").datepicker("getDate");
+
+      if ( end == null || start == null || start > end)
+      {
+        $('#DateError').removeAttr("hidden");
+        $('#DateError strong').html("Dates erronés");
+      }
+
+      else{
+        $.ajax({
+          type: 'POST',
+          url: '/manager/absence',
+          data: {
+            artisanId: artisanId,
+            startDate: start,
+            endDate: end
+          },
+          success: function (code) {
+            if(code == "OK"){
+              $("#absence").modal('toggle');
+              showAlert("#succesAlert","Periode ajouté!")
+            }
+            else{
+              $('#DateError').removeAttr("hidden");
+              $('#DateError strong').html("Période invalide!");
+            }
+
+          }
+        });
+
+      }
+      succesAlert
+    });
+
+    function showAlert(id,msg){
+      $(id).removeAttr('hidden');
+      $(id).find("strong").html(msg);
+    }
+    $('#DateError button').on('click', function () {
+      $(this).parent().attr("hidden",true);
+    });
+
   });
 </script>
+<span th:replace="layouts/foot :: foot"></span>
 </body>
 </html>

@@ -5,6 +5,7 @@ import com.ufr.tlib.excepetions.ArtisanNotFound;
 import com.ufr.tlib.models.Artisan;
 import com.ufr.tlib.repository.IArtisanDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,20 +29,20 @@ public class ArtisanService implements IArtisanService {
     }
 
     @Override
-    public void deleteArtisan(Artisan artisan) throws ArtisanNotFound {
+    public void deleteArtisan(Artisan artisan) throws ArtisanNotFound, DataIntegrityViolationException {
         try{
             artisanDao.delete(artisan);
-        }catch (Exception ex){
-            throw new ArtisanNotFound();
+        }catch (DataIntegrityViolationException ex){
+            throw new DataIntegrityViolationException(ex.getMessage());
         }
     }
 
     @Override
-    public void deleteArtisanById(Long id) throws ArtisanNotFound {
+    public void deleteArtisanById(Long id) throws ArtisanNotFound, DataIntegrityViolationException {
         try{
             artisanDao.deleteById(id);
-        }catch (Exception ex){
-            throw new ArtisanNotFound();
+        }catch (DataIntegrityViolationException ex){
+            throw new DataIntegrityViolationException(ex.getMessage());
         }
     }
 

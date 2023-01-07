@@ -3,12 +3,16 @@ package com.ufr.tlib.controllers;
 import com.ufr.tlib.dataManagementServices.IArtisanService;
 import com.ufr.tlib.dataManagementServices.ILocalService;
 import com.ufr.tlib.dataManagementServices.IUserService;
+import com.ufr.tlib.dataManagementServices.implementation.IAbsenceService;
 import com.ufr.tlib.excepetions.ArtisanNotFound;
 import com.ufr.tlib.excepetions.UserNotFoundException;
+import com.ufr.tlib.models.Absence;
 import com.ufr.tlib.models.Artisan;
 import com.ufr.tlib.models.Local;
 import com.ufr.tlib.models.Service;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/manager")
@@ -30,6 +35,9 @@ public class ManagerController {
     private ILocalService localService;
     @Autowired
     private IArtisanService artisanService;
+
+    @Autowired
+    private IAbsenceService absenceService;
 
 
     @GetMapping("/creation")
@@ -135,13 +143,32 @@ public class ManagerController {
             Artisan artisan = artisanService.getArtisanById(artisanId);
             if (!artisan.getLocal().getManager().getUsername().equals(principal.getName()))
                 return HttpStatus.UNAUTHORIZED;
-            artisanService.deleteArtisanById(artisanId);
+            artisanService.deleteArtisan(artisan);
             return HttpStatus.OK;
         } catch (ArtisanNotFound e) {
             return HttpStatus.NOT_FOUND;
-        } catch(Exception ex){
+        } catch(DataIntegrityViolationException ex){
             return HttpStatus.FAILED_DEPENDENCY;
         }
+    }
+
+    @PostMapping("/absence")
+    @ResponseBody
+    public HttpStatus addAbsence(@RequestParam("artisanId") Long artisanId, @RequestParam("startDate") Date startDate, @RequestParam("endDate") Date endDate, Principal principal) {
+
+        Artisan artisan = Artisan.builder()
+                .id(artisanId)
+                .build();
+        Absence absence = Absence.builder()
+                .startDate(startDate)
+                .endDate(endDate)
+                .artisan(artisan)
+                .build();
+        int code = absenceService.addAbsence(absence);
+        if (code == 1)
+            return HttpStatus.OK;
+        else
+            return HttpStatus.CONFLICT;
     }
 
 }

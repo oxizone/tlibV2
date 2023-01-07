@@ -19,8 +19,10 @@ public class Absence {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
 
-
+    @Column(columnDefinition = "DATE")
     private Date startDate;
+
+    @Column(columnDefinition = "DATE")
     private Date endDate;
     @ManyToOne
     private Artisan artisan;
