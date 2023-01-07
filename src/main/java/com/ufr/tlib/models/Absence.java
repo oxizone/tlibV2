@@ -4,8 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,26 +12,18 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @Entity
-public class RDV {
+public class Absence {
 
     @Id
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
 
-    @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime date;
 
-    @ManyToOne
-    private User client;
-
+    private Date startDate;
+    private Date endDate;
     @ManyToOne
     private Artisan artisan;
-
-    @ManyToOne
-    private Prestation prestation;
-
-
 
 
 }
