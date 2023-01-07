@@ -1,13 +1,15 @@
 package com.ufr.tlib.controllers;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.ufr.tlib.dataManagementServices.IArtisanService;
 import com.ufr.tlib.dataManagementServices.ILocalService;
 import com.ufr.tlib.dataManagementServices.IUserService;
+import com.ufr.tlib.excepetions.ArtisanNotFound;
 import com.ufr.tlib.excepetions.UserNotFoundException;
+import com.ufr.tlib.models.Artisan;
 import com.ufr.tlib.models.Local;
 import com.ufr.tlib.models.Service;
-import com.ufr.tlib.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +28,8 @@ public class ManagerController {
     private IUserService userService;
     @Autowired
     private ILocalService localService;
+    @Autowired
+    private IArtisanService artisanService;
 
 
     @GetMapping("/creation")
@@ -45,7 +49,7 @@ public class ManagerController {
         return "redirect:creation?success";
     }
 
-    @GetMapping("/liste/local")
+    @GetMapping("/local/liste")
     public String listeLocal(Principal principal,Model model) throws UserNotFoundException {
         model.addAttribute("locals",localService.getListLocalByManager(principal.getName()));
         return root + "liste_local";
@@ -75,7 +79,7 @@ public class ManagerController {
         }catch(Exception ex){
             return "error/400";
         }
-        System.out.println(local.getManager().getUsername());
+
         if(!principal.getName().equals(local.getManager().getUsername()))
             return "error/403";
 
@@ -92,7 +96,53 @@ public class ManagerController {
          }
          localService.updateLocal(local);
 
-         return "redirect:/manager/liste/local?updateSuccess";
+         return "redirect:/manager/local/"+local.getId();
      }
+
+     @PostMapping("/artisan")
+     @ResponseBody
+    public String addArtisan(@RequestParam("localId") Long idLocal,@RequestParam("fName") String fName, @RequestParam("lName") String lName, @RequestParam("avatar") String avatar,Model model){
+         Local local = Local.builder()
+                 .id(idLocal)
+                 .build();
+        Artisan artisan = Artisan.builder()
+                 .firstName(fName)
+                 .lastName(lName)
+                 .avatar(avatar)
+                 .local(local)
+                 .build();
+         artisanService.addArtisan(artisan);
+         return "/manager/local/"+idLocal;
+     }
+
+    @PutMapping("/artisan")
+    @ResponseBody
+    public String updateArtisan(@RequestParam("artisanId") Long artisanId,@RequestParam("fName") String fName, @RequestParam("lName") String lName, @RequestParam("avatar") String avatar,Model model) throws ArtisanNotFound {
+
+        Artisan artisan = artisanService.getArtisanById(artisanId);
+        artisan.setAvatar(avatar);
+        artisan.setFirstName(fName);
+        artisan.setLastName(lName);
+        artisanService.updateArtisan(artisan);
+        return "/manager/local/"+artisan.getLocal().getId();
+    }
+
+    @DeleteMapping("/artisan")
+    @ResponseBody
+    public HttpStatus deleteArtisan(@RequestParam("artisanId") Long artisanId, Principal principal) {
+
+        try {
+            Artisan artisan = artisanService.getArtisanById(artisanId);
+            if (!artisan.getLocal().getManager().getUsername().equals(principal.getName()))
+                return HttpStatus.UNAUTHORIZED;
+            artisanService.deleteArtisanById(artisanId);
+            return HttpStatus.OK;
+        } catch (ArtisanNotFound e) {
+            return HttpStatus.NOT_FOUND;
+        } catch(Exception ex){
+            return HttpStatus.FAILED_DEPENDENCY;
+        }
+    }
+
 }
 

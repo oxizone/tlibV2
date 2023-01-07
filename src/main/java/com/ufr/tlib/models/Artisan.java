@@ -26,4 +26,10 @@ public class Artisan {
     @ManyToOne
     private Local local;
 
+    @OneToMany(mappedBy = "artisan", fetch = FetchType.LAZY)
+    private List<Absence> absences;
+
+    @OneToMany(mappedBy = "artisan", fetch = FetchType.LAZY)
+    private List<RDV> RDVs;
+
 }

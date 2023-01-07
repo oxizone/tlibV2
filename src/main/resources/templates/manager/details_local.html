@@ -6,47 +6,234 @@
   <title>Details</title>
 </head>
 <body>
+<div hidden class="alert alert-danger fade show alert-dismissible" role="alert" data-bs-color="danger" id="artisanNotFound" bis_skin_checked="1">
+  <strong></strong>
+  <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
+</div>
 <div class="container">
-  <div class="row">
-    <div class="col">
-      <table>
-        <tr>
-          <td>id</td>
-          <td>:</td>
-          <td>id</td>
-        </tr>
-        <tr>
-          <td>nom</td>
-          <td>:</td>
-          <td>name</td>
-        </tr>
-        <tr>
-          <td>Tel</td>
-          <td>:</td>
-          <td>045</td>
-        </tr>
-      </table>
+  <div class="local shadow-lg p-3 mb-5 bg-body rounded">
+    <h2>Local</h2>
+    <div class="row">
+      <div class="col">
+        <table>
+          <tr>
+            <td>id</td>
+            <td>:</td>
+            <td id="localId"  th:text="${local.id}"></td>
+          </tr>
+          <tr>
+            <td>nom</td>
+            <td>:</td>
+            <td>name</td>
+          </tr>
+          <tr>
+            <td>Tel</td>
+            <td>:</td>
+            <td>045</td>
+          </tr>
+        </table>
+      </div>
+      <div class="col">
+        <table>
+          <tr>
+            <td>description</td>
+            <td>:</td>
+            <td>description</td>
+          </tr>
+          <tr>
+            <td>adresse</td>
+            <td>:</td>
+            <td>address</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>:</td>
+            <td>mei@ddk.ckp</td>
+          </tr>
+        </table>
+      </div>
     </div>
-    <div class="col">
-      <table>
+  </div>
+
+  <h2>Liste des artisans</h2>
+  <div class="row">
+    <div class="col-md-12 text-right">
+      <input type="button" id="btnAdd" class="btn btn-primary para" value="Ajouter" />
+    </div>
+  </div>
+  <div class="row pt-3">
+    <div class="col-md-12 col-sm-12 col-12 p-2 ">
+      <table id="tblData" class="table table-bordered table-hover table-striped shadow-lg p-3 mb-5 bg-body rounded">
+        <thead>
         <tr>
-          <td>description</td>
-          <td>:</td>
-          <td>description</td>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Avatar</th>
+            <th class="tdaction">Action</th>
         </tr>
-        <tr>
-          <td>adresse</td>
-          <td>:</td>
-          <td>address</td>
-        </tr>
-        <tr>
-          <td>Email</td>
-          <td>:</td>
-          <td>mei@ddk.ckp</td>
-        </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr th:each="artisan : ${local.artisans}" th:id="${artisan.id}">
+                <td class='tdFName' th:text="${artisan.firstName}">
+
+                </td>
+                <td class='tdLName' th:text="${artisan.lastName}">
+
+                </td>
+                <td class='tdAvatar' th:text="${artisan.avatar}">
+
+                </td>
+                <td class='tdAction'>
+                    <button class='btn btn-success btn-sm btn-edit' > Edit </button>  <button class='btn btn-danger btn-sm' > Delete </button>
+                </td>
+
+            </tr>
+
+        </tbody>
       </table>
     </div>
   </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  var emptyRow = "<tr><td colspan='4' class='text-center'> Pas d'artisans</td></tr>";
+  var emptyNewRow = "<tr class='trNewRow'>";
+
+  emptyNewRow = emptyNewRow + "    <td class='tdFName'>";
+  emptyNewRow = emptyNewRow + "        <input type='text' class='form-control txtFName' placeholder='Enter le nom'/>";
+  emptyNewRow = emptyNewRow + "    </td>";
+  emptyNewRow = emptyNewRow + "    <td class='tdLName'>";
+  emptyNewRow = emptyNewRow + "        <input type='text' class='form-control txtLName' placeholder='Enter le prenom'/>";
+  emptyNewRow = emptyNewRow + "    </td>";
+  emptyNewRow = emptyNewRow + "    <td class='tdAvatar'>";
+  emptyNewRow = emptyNewRow + "        <input type='text' class='form-control txtAvatar' placeholder='Entrer avatar'/>";
+  emptyNewRow = emptyNewRow + "    </td>";
+  emptyNewRow = emptyNewRow + "    <td class='tdAction'>";
+  emptyNewRow = emptyNewRow + "        <button class='btn btn-sm btn-success btn-save'> Save</button>";
+  emptyNewRow = emptyNewRow + "        <button class='btn btn-sm btn-success btn-cancel'> Cancel</button>";
+  emptyNewRow = emptyNewRow + "    </td>";
+  emptyNewRow = emptyNewRow + "</tr>";
+  var rowButtons ="<button class='btn btn-success btn-sm btn-edit' > Edit </button>  <button class='btn btn-danger btn-sm' > Delete </button> ";
+  var rowUpdateButtons ="<button class='btn btn-success btn-sm btn-save' > Update </button> ";
+
+
+  $(document).ready(function () {
+
+    const localId = $("#localId").text();
+    const path = "/manager/local/"+localId;
+
+    if ($('#tableBody').children().length == 0){
+      $("#tblData tbody").append(emptyRow); // adding empty row on page load
+    }
+    $("#btnAdd").click(function () {
+      if ($("#tblData tbody").children().children().length == 1) {
+        $("#tblData tbody").html("");
+      }
+      $("#tblData tbody").append(emptyNewRow); // appending dynamic string to table tbody
+    });
+
+    $('#tblData').on('click', '.btn-save', function () {
+      const artisanId = $(this).parent().parent().attr('id');
+
+      const fName =  $(this).parent().parent().find(".txtFName").val();
+      $(this).parent().parent().find(".tdFName").html(""+fName+"");
+      const lName =  $(this).parent().parent().find(".txtLName").val();
+      $(this).parent().parent().find(".tdLName").html(""+lName+"");
+      const avatar =  $(this).parent().parent().find(".txtAvatar").val();
+      $(this).parent().parent().find(".tdAvatar").html(""+avatar+"");
+      $(this).parent().parent().find(".tdAction").html(rowButtons);
+
+      if (artisanId == undefined){
+        $.ajax({
+          type: 'POST',
+          url: '/manager/artisan',
+          data: {
+            localId: localId,
+            fName: fName,
+            lName: lName,
+            avatar : avatar
+          },
+          success: function (code) {
+            window.location = path;
+          }
+        });
+      }else{
+        $.ajax({
+          type: 'PUT',
+          url: '/manager/artisan',
+          data: {
+            artisanId: artisanId,
+            fName: fName,
+            lName: lName,
+            avatar : avatar
+          },
+          success: function (code) {
+            window.location = path;
+          }
+        });
+      }
+
+
+    });
+
+
+    $('#tblData').on('click', '.btn-danger', function () { // registering function for delete button
+      const artisanId = $(this).parent().parent().attr('id');
+      $.ajax({
+        type: 'DELETE',
+        url: '/manager/artisan',
+        data: {
+          artisanId: artisanId,
+        },
+        success: function (code) {
+
+          if (code=="OK")
+          {
+            window.location = path;
+          }else
+          {
+            $("#artisanNotFound").removeAttr('hidden');
+            if (code == "NOT_FOUND")
+              $("#artisanNotFound strong").html("Artisan introuvable")
+            else if (code == "UNAUTHORIZED")
+              $("#artisanNotFound strong").html("Action pas autorisé")
+            else if (code == "FAILED_DEPENDENCY")
+              $("#artisanNotFound strong").html("Impossible de supprimer l'artisan (Dependance).")
+            else
+              $("#artisanNotFound strong").html("Erreur")
+          }
+
+        }
+      });
+    });
+
+
+    $('#tblData').on('click', '.btn-cancel', function () {
+      $(this).parent().parent().remove();
+    });
+
+    $('#tblData').on('click', '.btn-edit', function () {
+
+      const artisanId = $(this).parent().parent().attr('id');
+
+      const fName =$(this).parent().parent().find(".tdFName").html();
+
+      $(this).parent().parent().find(".tdFName").html("<input type='text' value='"+fName+"' class='form-control txtFName' placeholder='Enter Nom'/>");
+
+
+      const lName =$(this).parent().parent().find(".tdLName").html();
+
+      $(this).parent().parent().find(".tdLName").html("<input type='text' value='"+lName+"' class='form-control txtLName' placeholder='Enter prenom'/>");
+
+
+      const avatar =$(this).parent().parent().find(".tdAvatar").html();
+
+      $(this).parent().parent().find(".tdAvatar").html("<input type='text' value='"+avatar+"' class='form-control txtAvatar' placeholder='Enter avatar'/>");
+      $(this).parent().parent().find(".tdAction").html(rowUpdateButtons);
+
+    });
+  });
+</script>
 </body>
 </html>
