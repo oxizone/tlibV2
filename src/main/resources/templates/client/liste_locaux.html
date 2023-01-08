@@ -5,7 +5,7 @@
     <span th:replace="layouts/head :: head"></span>
     <title>Liste des locaux</title>
 </head>
-<body>
+<body style="background: #eee">
 <span th:replace="client/client_navbar :: user_navbar"></span>
 <div class="container">
     <div class="locaux-list">
@@ -26,7 +26,7 @@
 
         <h6 class="mb-6">
             <span th:text="${locaux.size()}"></span>
-            resultats disponibles
+            local disponible
         </h6>
         <div class="row g-3">
             <div class="col-12 col-md-6 col-lg-4" th:each="local : ${locaux}">
@@ -58,7 +58,6 @@
         </ul>
     </div>
 </div>
-<span th:replace="layouts/footer :: footer"></span>
 <span th:replace="layouts/foot :: foot"></span>
 </body>
 </html>

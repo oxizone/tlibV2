@@ -71,11 +71,4 @@ public class LocalService implements ILocalService {
     public void updateLocal(Local local) {
         localDao.save(local);
     }
-
-    @Override
-    public void save(Local local) {
-        localDao.save(local);
-    }
-
-
 }
