@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.security.Principal;
 
 @Controller
 @RequestMapping("/user")
@@ -57,6 +56,8 @@ public class UserControler {
 
         Local local = localService.getLocal(id);
         model.addAttribute("local",local);
+        model.addAttribute("artisans",local.getArtisans());
+        model.addAttribute("prestations",local.getPrestations());
         return root + "local_details";
     }
 

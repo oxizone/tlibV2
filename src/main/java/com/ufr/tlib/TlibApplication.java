@@ -2,6 +2,7 @@ package com.ufr.tlib;
 
 import com.ufr.tlib.dataManagementServices.implementation.ArtisanService;
 import com.ufr.tlib.dataManagementServices.implementation.LocalService;
+import com.ufr.tlib.dataManagementServices.implementation.PrestationService;
 import com.ufr.tlib.dataManagementServices.implementation.UserService;
 import com.ufr.tlib.models.*;
 import com.ufr.tlib.repository.IRoleDao;
@@ -20,6 +21,9 @@ public class TlibApplication implements CommandLineRunner {
 
 	private final ArtisanService artisanService;
 	private final UserService userService;
+
+	private final PrestationService prestationService;
+
 
 
 	public static void main(String[] args) {
@@ -84,6 +88,16 @@ public class TlibApplication implements CommandLineRunner {
 				.local(sallonCoiffure2)
 				.build();
 
+
+		Prestation coiffure = Prestation.builder()
+				.price(18)
+				.duration(45)
+				.name("Coiffure simple")
+				.description("coiffure simple pour homme")
+				.local(sallonCoiffure)
+				.build();
+
+
 		roleRepository.save(managerRole);
 		roleRepository.save(userRole);
 		userService.addUser(manager);
@@ -94,5 +108,8 @@ public class TlibApplication implements CommandLineRunner {
 		localService.addLocal(sallonCoiffure2,manager.getUsername());
 
 		artisanService.addArtisan(artisan);
+
+		prestationService.addPrestation(coiffure);
+
 	}
 }
