@@ -45,5 +45,11 @@ public class PrestationService implements IPrestationService {
         }catch (Exception ex){
             throw new PrestationNotFound();
         }
+
+    }
+
+    @Override
+    public void save(Prestation prestation) {
+        prestationDao.save(prestation);
     }
 }

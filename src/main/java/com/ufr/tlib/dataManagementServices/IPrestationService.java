@@ -10,4 +10,6 @@ public interface IPrestationService {
     void updatePrestation(Prestation prestation) throws PrestationNotFound;
     void deletePrestation(Prestation prestation) throws PrestationNotFound;
     void deletePrestationById(Long id) throws PrestationNotFound;
+
+    void save(Prestation prestation);
 }
