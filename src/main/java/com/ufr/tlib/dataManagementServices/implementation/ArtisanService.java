@@ -1,11 +1,17 @@
 package com.ufr.tlib.dataManagementServices.implementation;
 
 import com.ufr.tlib.dataManagementServices.IArtisanService;
+<<<<<<< Updated upstream
 import com.ufr.tlib.excepetions.ArtisanNotFound;
 import com.ufr.tlib.models.Artisan;
 import com.ufr.tlib.repository.IArtisanDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+=======
+import com.ufr.tlib.models.Artisan;
+import com.ufr.tlib.repository.IArtisanDao;
+import org.springframework.beans.factory.annotation.Autowired;
+>>>>>>> Stashed changes
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,6 +19,7 @@ public class ArtisanService implements IArtisanService {
     @Autowired
     private IArtisanDao artisanDao;
 
+<<<<<<< Updated upstream
     @Override
     public void addArtisan(Artisan artisan) {
         artisanDao.save(artisan);
@@ -47,4 +54,11 @@ public class ArtisanService implements IArtisanService {
     }
 
 
+=======
+
+    @Override
+    public void save(Artisan artisan) {
+        artisanDao.save(artisan);
+    }
+>>>>>>> Stashed changes
 }

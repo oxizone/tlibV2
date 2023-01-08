@@ -22,5 +22,5 @@ public interface ILocalService {
     public Local getLocal(long id);
 
     public void updateLocal(Local local);
-
+    void save(Local local);
 }

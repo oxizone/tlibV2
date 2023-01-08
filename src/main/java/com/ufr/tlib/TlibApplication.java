@@ -2,6 +2,7 @@ package com.ufr.tlib;
 
 import com.ufr.tlib.dataManagementServices.implementation.ArtisanService;
 import com.ufr.tlib.dataManagementServices.implementation.LocalService;
+import com.ufr.tlib.dataManagementServices.implementation.PrestationService;
 import com.ufr.tlib.dataManagementServices.implementation.UserService;
 import com.ufr.tlib.models.*;
 import com.ufr.tlib.repository.IRoleDao;
@@ -20,7 +21,8 @@ public class TlibApplication implements CommandLineRunner {
 
 	private final ArtisanService artisanService;
 	private final UserService userService;
-
+	private final ArtisanService artisanService;
+	private final PrestationService prestationService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(TlibApplication.class, args);
@@ -84,6 +86,47 @@ public class TlibApplication implements CommandLineRunner {
 				.local(sallonCoiffure2)
 				.build();
 
+		Artisan artisan1 = Artisan.builder()
+				.firstName("Ahmed")
+				.lastName("Aziz")
+				.local(sallonCoiffure)
+				.build();
+
+		Artisan artisan2 = Artisan.builder()
+				.firstName("Ahmed")
+				.lastName("Aziz")
+				.local(sallonCoiffure)
+				.build();
+
+
+		Prestation  coiffure_complexe = Prestation.builder()
+				.name("coiffure complexe")
+				.duration(45)
+				.price(18)
+				.local(sallonCoiffure)
+				.description("une coupe pour homme complexe")
+				.build();
+
+
+		Prestation coiffure_simple = Prestation.builder()
+				.name("coiffure simple")
+				.duration(30)
+				.price(15)
+				.description("une coupe pour homme simple ")
+				.local(sallonCoiffure)
+				.build();
+
+		Prestation coiffure_simple2 = Prestation.builder()
+				.name("coiffure simple")
+				.duration(30)
+				.price(15)
+				.description("une coupe pour homme simple ")
+				.local(sallonCoiffure)
+				.build();
+
+
+
+
 		roleRepository.save(managerRole);
 		roleRepository.save(userRole);
 		userService.addUser(manager);
@@ -93,6 +136,19 @@ public class TlibApplication implements CommandLineRunner {
 		localService.addLocal(sallonCoiffure,manager.getUsername());
 		localService.addLocal(sallonCoiffure2,manager.getUsername());
 
+<<<<<<< Updated upstream
 		artisanService.addArtisan(artisan);
+=======
+		artisanService.save(artisan1);
+		artisanService.save(artisan2);
+
+		localService.save(sallonCoiffure);
+
+		prestationService.save(coiffure_complexe);
+		prestationService.save(coiffure_simple);
+		prestationService.save(coiffure_simple2);
+
+
+>>>>>>> Stashed changes
 	}
 }

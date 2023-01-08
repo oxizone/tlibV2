@@ -1,7 +1,10 @@
 package com.ufr.tlib.dataManagementServices.implementation;
 
 import com.ufr.tlib.dataManagementServices.IPrestationService;
+<<<<<<< Updated upstream
 import com.ufr.tlib.excepetions.PrestationNotFound;
+=======
+>>>>>>> Stashed changes
 import com.ufr.tlib.models.Prestation;
 import com.ufr.tlib.repository.IPrestationDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class PrestationService implements IPrestationService {
 
     @Autowired
+<<<<<<< Updated upstream
     private IPrestationDao prestationDao;
 
     @Override
@@ -45,5 +49,12 @@ public class PrestationService implements IPrestationService {
         }catch (Exception ex){
             throw new PrestationNotFound();
         }
+=======
+    private IPrestationDao prestationRepo;
+
+    @Override
+    public void save(Prestation prestation) {
+        prestationRepo.save(prestation);
+>>>>>>> Stashed changes
     }
 }

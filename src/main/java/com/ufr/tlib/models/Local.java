@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -51,7 +52,7 @@ public class Local {
     private List<Artisan> artisans;
 
     @OneToMany(mappedBy = "local")
-    private List<Prestation> prestations;
+    private List<Prestation> prestations = new ArrayList<>();
     @ManyToOne
     private User manager;
 
