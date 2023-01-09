@@ -6,7 +6,9 @@ import com.ufr.tlib.excepetions.RDVNotFound;
 import com.ufr.tlib.models.Address;
 import com.ufr.tlib.repository.IAddressDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AddressService implements IAddressService {
 
     @Autowired

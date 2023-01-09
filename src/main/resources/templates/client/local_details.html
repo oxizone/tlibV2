@@ -25,13 +25,14 @@
             <div class="row">
                 <div class="col-md-12 col-lg-6" th:each="prestation : ${prestations}">
                     <div class="prestation-card">
-                        <h4 th:text="${prestation.name}"></h4>
+                        <h6 th:text="${prestation.name}"></h6>
 
                         <div class="prestation-details">
                             <span class="muted-text" th:text="${prestation.price}+ ' €'"></span>
                             <span class="muted-text">-</span>
                             <span class="muted-text" th:text="${prestation.duration} + ' min'"></span>
-                            <button class="btn btn-dark">Select</button>
+                            <a class="btn btn-dark"
+                            >Select</a>
                         </div>
                     </div>
                 </div>

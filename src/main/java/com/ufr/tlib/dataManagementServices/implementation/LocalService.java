@@ -9,10 +9,12 @@ import com.ufr.tlib.models.User;
 import com.ufr.tlib.repository.ILocalDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LocalService implements ILocalService {
@@ -54,6 +56,54 @@ public class LocalService implements ILocalService {
     @Override
     public Page<Local> getLocalPageByKeywordAndServiceType(String keyword, com.ufr.tlib.models.Service service, int page, int size) {
         return localDao.findLocalByNameContainsAndService(keyword,service,PageRequest.of(page,size));
+    }
+
+    @Override
+    public Page<Local> getLocalPageByKeywordAndServiceTypeAndCity(String keyword, com.ufr.tlib.models.Service service, String city, int page, int size) {
+        Page<Local> locauxPage = null;
+
+        //tous est null
+        if(keyword.equals("") && city.equals("") && service == null){
+            locauxPage = localDao.findAll(PageRequest.of(page,size));
+            System.out.println("tous est null");
+        }
+
+        //keyword - city - service
+        if(!keyword.equals("") && !city.equals("") && service != null){
+            locauxPage = localDao.findLocalByNameContainsAndServiceAndAdresse_City(keyword,service,city,PageRequest.of(page,size));
+        }
+
+        //keyword - city
+        if(!keyword.equals("") && !city.equals("") && service == null){
+            locauxPage = localDao.findLocalByNameContainsAndAdresse_City(keyword,city,PageRequest.of(page,size));
+        }
+
+        //keyword - service
+        if(!keyword.equals("") && city.equals("") && service != null){
+            locauxPage = localDao.findLocalByNameContainsAndService(keyword,service,PageRequest.of(page,size));
+        }
+
+        //city - service
+        if(keyword.equals("") && !city.equals("") && service != null){
+            locauxPage = localDao.findLocalByServiceAndAdresse_City(service,city,PageRequest.of(page,size));
+        }
+
+        //keyword
+        if(!keyword.equals("") && city.equals("") && service == null){
+            locauxPage = localDao.findLocalByNameContains(keyword,PageRequest.of(page,size));
+        }
+
+        //city
+        if(keyword.equals("") && !city.equals("") && service == null){
+            locauxPage = localDao.findLocalByAdresse_City(city,PageRequest.of(page,size));
+        }
+
+        //service
+        if(keyword.equals("") && city.equals("") && service != null){
+            locauxPage = localDao.findLocalByService(service,PageRequest.of(page,size));
+        }
+
+       return locauxPage;
     }
 
     @Override

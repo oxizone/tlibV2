@@ -1,9 +1,6 @@
 package com.ufr.tlib;
 
-import com.ufr.tlib.dataManagementServices.implementation.ArtisanService;
-import com.ufr.tlib.dataManagementServices.implementation.LocalService;
-import com.ufr.tlib.dataManagementServices.implementation.PrestationService;
-import com.ufr.tlib.dataManagementServices.implementation.UserService;
+import com.ufr.tlib.dataManagementServices.implementation.*;
 import com.ufr.tlib.models.*;
 import com.ufr.tlib.repository.IRoleDao;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +20,7 @@ public class TlibApplication implements CommandLineRunner {
 	private final UserService userService;
 
 	private final PrestationService prestationService;
+	private final AddressService addressService;
 
 
 
@@ -97,6 +95,17 @@ public class TlibApplication implements CommandLineRunner {
 				.local(sallonCoiffure)
 				.build();
 
+		Address address = Address.builder()
+				.city("Besançon")
+				.zipCode("25000")
+				.local(sallonCoiffure)
+				.build();
+
+		Address addres2 = Address.builder()
+				.city("Besançon")
+				.zipCode("25000")
+				.local(sallonCoiffure2)
+				.build();
 
 		roleRepository.save(managerRole);
 		roleRepository.save(userRole);
@@ -110,6 +119,7 @@ public class TlibApplication implements CommandLineRunner {
 		artisanService.addArtisan(artisan);
 
 		prestationService.addPrestation(coiffure);
-
+		addressService.addAddress(address);
+		addressService.addAddress(addres2);
 	}
 }

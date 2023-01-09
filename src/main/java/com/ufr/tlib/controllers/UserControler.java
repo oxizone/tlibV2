@@ -32,20 +32,18 @@ public class UserControler {
                              @RequestParam(name = "page", defaultValue = "0", required = false) int page,
                              @RequestParam(name = "size", defaultValue = "6", required = false) int size,
                              @RequestParam(name = "keyword", defaultValue = "", required = false) String keyword,
-                             @RequestParam(name = "service", defaultValue = "", required = false) Service service
+                             @RequestParam(name = "service", defaultValue = "", required = false) Service service,
+                             @RequestParam(name = "city", defaultValue = "", required = false) String city
+
 
     ) throws UserNotFoundException {
-        Page<Local> locauxPage;
-        if(service == null){
-            locauxPage = localService.getLocalPageByKeyword(keyword, page,size);
-        }else{
-            locauxPage = localService.getLocalPageByKeywordAndServiceType(keyword,service, page,size);
-        }
+        Page<Local> locauxPage = localService.getLocalPageByKeywordAndServiceTypeAndCity(keyword,service,city,page,size);
 
         model.addAttribute("locaux",locauxPage.getContent());
         model.addAttribute("pages",new int[locauxPage.getTotalPages()]);
         model.addAttribute("currentPage",page);
         model.addAttribute("keyword",keyword);
+        model.addAttribute("city",city);
         model.addAttribute("size",size);
         model.addAttribute("service",service);
         return root + "liste_locaux";
