@@ -2,6 +2,8 @@ package com.ufr.tlib.models;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,7 +24,7 @@ public class Artisan {
     private String firstName;
     private String lastName;
     private String avatar;
-
+    private boolean deleted = false;
     @ManyToOne
     private Local local;
 

@@ -1,4 +1,4 @@
-package com.ufr.tlib.dataManagementServices.implementation;
+package com.ufr.tlib.dataManagementServices;
 
 import com.ufr.tlib.excepetions.AbsenceNotFound;
 import com.ufr.tlib.models.Absence;

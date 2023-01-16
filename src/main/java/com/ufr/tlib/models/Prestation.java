@@ -20,7 +20,7 @@ public class Prestation {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
 
-    private String name;
+    private String titre;
     private String description;
     private int duration;
     private double price;
