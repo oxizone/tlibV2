@@ -3,6 +3,8 @@ package com.ufr.tlib.dataManagementServices;
 import com.ufr.tlib.excepetions.ArtisanNotFound;
 import com.ufr.tlib.models.Artisan;
 
+import java.util.List;
+
 public interface IArtisanService {
     void addArtisan(Artisan artisan);
     Artisan getArtisanById(Long id) throws ArtisanNotFound;

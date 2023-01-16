@@ -3,14 +3,13 @@ package com.ufr.tlib.controllers;
 import com.ufr.tlib.dataManagementServices.IArtisanService;
 import com.ufr.tlib.dataManagementServices.ILocalService;
 import com.ufr.tlib.dataManagementServices.IUserService;
-import com.ufr.tlib.dataManagementServices.implementation.IAbsenceService;
+import com.ufr.tlib.dataManagementServices.IAbsenceService;
 import com.ufr.tlib.excepetions.ArtisanNotFound;
 import com.ufr.tlib.excepetions.UserNotFoundException;
 import com.ufr.tlib.models.Absence;
 import com.ufr.tlib.models.Artisan;
 import com.ufr.tlib.models.Local;
 import com.ufr.tlib.models.Service;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -92,6 +91,7 @@ public class ManagerController {
             return "error/403";
 
         model.addAttribute("local",local);
+
         model.addAttribute("services", Service.values());
         return root + "details_local";
     }

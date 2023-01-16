@@ -7,6 +7,7 @@
   <title>Details</title>
 </head>
 <body>
+<span th:replace="layouts/manager_navbar :: manager_navbar"></span>
 <div hidden class="alert alert-danger fade show alert-dismissible" role="alert" data-bs-color="danger" id="artisanNotFound" bis_skin_checked="1">
   <strong></strong>
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -15,9 +16,16 @@
   <strong></strong>
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-<div class="container">
-  <div class="local shadow-lg p-3 mb-5 bg-body rounded">
-    <h2>Local</h2>
+<div class="container mt-5">
+  <h2>Local</h2>
+    <div class="row">
+      <div class="col-md-12 text-right">
+        <a th:href="${'/manager/local/edit/'+local.id}">
+          <input type="button" id="editLocal" class="btn btn-success para" value="Modifier" />
+        </a>
+      </div>
+    </div>
+  <div class="local shadow p-3 mb-5 mt-3 bg-body rounded">
     <div class="row">
       <div class="col">
         <table>
@@ -67,8 +75,8 @@
     </div>
   </div>
   <div class="row pt-3">
-    <div class="col-md-12 col-sm-12 col-12 p-2 ">
-      <table id="tblData" class="table table-bordered table-hover table-striped shadow-lg p-3 mb-5 bg-body rounded">
+    <div class="col-md-12 col-sm-12 col-12 ">
+      <table id="tblData" class="table table-bordered table-hover table-striped shadow p-3 mb-5 bg-body rounded">
         <thead>
         <tr>
             <th>Nom</th>
@@ -100,6 +108,53 @@
       </table>
     </div>
   </div>
+
+  <h2>Liste des prestation</h2>
+  <div class="row">
+    <div class="col-md-12 text-right">
+      <input type="button" id="btnAddPrestation" class="btn btn-primary para" value="Ajouter" />
+    </div>
+  </div>
+  <div class="row pt-3">
+    <div class="col-md-12 col-sm-12 col-12 ">
+      <table id="tblDataPrestation" class="table table-bordered table-hover table-striped shadow p-3 mb-5 bg-body rounded">
+        <thead>
+        <tr>
+          <th>Titre</th>
+          <th>Description</th>
+          <th>Durée</th>
+          <th>Prix</th>
+          <th class="tdactionPrestation">Action</th>
+        </tr>
+        </thead>
+        <tbody id="tableBodyPrestation">
+        <tr th:each="prestation : ${local.prestations}" th:id="${prestation.id}">
+          <td class='tdTitre' th:text="${prestation.titre}">
+
+          </td>
+          <td class='tdDescription' th:text="${prestation.description}">
+
+          </td>
+          <td class='tdDuration' th:text="${prestation.duration}">
+
+          </td>
+          <td class='tdPrice' th:text="${prestation.price}">
+
+          </td>
+          <td class='tdActionPrestation'>
+            <button class='btn btn-success btn-sm btn-edit' > Modifier </button>
+            <button class='btn btn-danger btn-sm' > Supprimer </button>
+          </td>
+
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+
 </div>
 
 <!-------------------------- MODAL ---------------------------->
@@ -159,6 +214,31 @@
   emptyNewRow = emptyNewRow + "</tr>";
   var rowButtons ="<button class='btn btn-success btn-sm btn-edit' > Modifier </button> <button type='button' class='btn btn-sm btn-secondary' >Désactiver</button> <button class='btn btn-danger btn-sm' > Supprimer </button> ";
   var rowUpdateButtons ="<button class='btn btn-success btn-sm btn-save' > Update </button> ";
+
+
+  var emptyRowPrestation = "<tr><td colspan='5' class='text-center'> Pas de prestation</td></tr>";
+  var emptyNewRowPrestation = "<tr class='trNewRowPrestation'>";
+
+  emptyNewRowPrestation = emptyNewRowPrestation + "    <td class='tdTitre'>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "        <input type='text' class='form-control txtTitre' placeholder='Enter le titre'/>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    </td>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    <td class='tdDescription'>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "        <input type='text' class='form-control txtDescription' placeholder='Enter la description'/>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    </td>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    <td class='tdDuration'>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "        <input type='text' class='form-control txtDuration' placeholder='Entrer la durée'/>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    </td>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    <td class='tdPrice'>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "        <input type='text' class='form-control txtPrice' placeholder='Entrer le prix'/>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    </td>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    <td class='tdAction'>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "        <button class='btn btn-sm btn-success btn-save'> Enregistrer</button>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "        <button class='btn btn-sm btn-success btn-cancel'> Annuler</button>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    </td>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "</tr>";
+  var rowButtonsPrestation ="<button class='btn btn-success btn-sm btn-edit' > Modifier </button>  <button class='btn btn-danger btn-sm' > Supprimer </button> ";
+  var rowUpdateButtonsPrestation ="<button class='btn btn-success btn-sm btn-save' > Update </button> ";
+
 
 
   $(document).ready(function () {
@@ -304,19 +384,16 @@
 
     $('#addAbsence').on('click', function () {
 
-      let artisanId =  $('#absence').find('.modal-title').attr("id");
+      let artisanId = $('#absence').find('.modal-title').attr("id");
 
 
       let start = $("#startDate").datepicker("getDate");
       let end = $("#endDate").datepicker("getDate");
 
-      if ( end == null || start == null || start > end)
-      {
+      if (end == null || start == null || start > end) {
         $('#DateError').removeAttr("hidden");
         $('#DateError strong').html("Dates erronés");
-      }
-
-      else{
+      } else {
         $.ajax({
           type: 'POST',
           url: '/manager/absence',
@@ -326,11 +403,10 @@
             endDate: end
           },
           success: function (code) {
-            if(code == "OK"){
+            if (code == "OK") {
               $("#absence").modal('toggle');
-              showAlert("#succesAlert","Periode ajouté!")
-            }
-            else{
+              showAlert("#succesAlert", "Periode ajouté!")
+            } else {
               $('#DateError').removeAttr("hidden");
               $('#DateError strong').html("Période invalide!");
             }
@@ -339,9 +415,128 @@
         });
 
       }
-      succesAlert
     });
 
+    ///////////////////////////////////// Prestation //////////////////////////////////////////::
+
+      if ($('#tableBodyPrestation').children().length == 0){
+        $("#tblDataPrestation tbody").append(emptyRowPrestation); // adding empty row on page load
+      }
+      $("#btnAddPrestation").click(function () {
+        if ($("#tblDataPrestation tbody").children().children().length == 1) {
+          $("#tblDataPrestation tbody").html("");
+        }
+        $("#tblDataPrestation tbody").append(emptyNewRowPrestation); // appending dynamic string to table tbody
+      });
+
+      $('#tblDataPrestation').on('click', '.btn-save', function () {
+        const prestationId = $(this).parent().parent().attr('id');
+
+        const titre =  $(this).parent().parent().find(".txtTitre").val();
+        $(this).parent().parent().find(".tdTitre").html(""+titre+"");
+        const description =  $(this).parent().parent().find(".txtDescription").val();
+        $(this).parent().parent().find(".txtDescription").html(""+description+"");
+        const duration =  $(this).parent().parent().find(".txtDuration").val();
+        $(this).parent().parent().find(".txtDuration").html(""+duration+"");
+        const price =  $(this).parent().parent().find(".txtPrice").val();
+        $(this).parent().parent().find(".txtPrice").html(""+price+"");
+        $(this).parent().parent().find(".tdAction").html(rowButtonsPrestation);
+
+        if (prestationId == undefined){
+          $.ajax({
+            type: 'POST',
+            url: '/manager/prestation',
+            data: {
+              localId: localId,
+              titre: titre,
+              description: description,
+              duration: duration,
+              price : price
+            },
+            success: function (code) {
+              window.location = path;
+            }
+          });
+        }else{
+          $.ajax({
+            type: 'PUT',
+            url: '/manager/prestation',
+            data: {
+              prestationId: prestationId,
+              titre: titre,
+              description: description,
+              duration: duration,
+              price : price
+            },
+            success: function (code) {
+              window.location = path;
+            }
+          });
+        }
+
+      });
+
+
+      $('#tblDataPrestation').on('click', '.btn-danger', function () { // registering function for delete button
+        const prestationId = $(this).parent().parent().attr('id');
+        $.ajax({
+          type: 'DELETE',
+          url: '/manager/prestation',
+          data: {
+            prestationId: prestationId,
+          },
+          success: function (code) {
+
+            if (code=="OK")
+            {
+              window.location = path;
+            }else
+            {
+              $("#artisanNotFound").removeAttr('hidden');
+              if (code == "NOT_FOUND")
+                $("#artisanNotFound strong").html("Artisan introuvable")
+              else if (code == "UNAUTHORIZED")
+                $("#artisanNotFound strong").html("Action pas autorisé")
+              else if (code == "FAILED_DEPENDENCY")
+                $("#artisanNotFound strong").html("Impossible de supprimer l'artisan (Dependance).")
+              else
+                $("#artisanNotFound strong").html("Erreur")
+            }
+
+          }
+        });
+      });
+
+
+      $('#tblDataPrestation').on('click', '.btn-cancel', function () {
+        $(this).parent().parent().remove();
+      });
+
+      $('#tblDataPrestation').on('click', '.btn-edit', function () { // show form
+
+        const titre =$(this).parent().parent().find(".tdTitre").html();
+
+        $(this).parent().parent().find(".tdTitre").html("<input type='text' value='"+titre+"' class='form-control txtTitre' placeholder='Enter le titre'/>");
+
+
+        const description =$(this).parent().parent().find(".tdDescription").html();
+
+        $(this).parent().parent().find(".tdDescription").html("<input type='text' value='"+description+"' class='form-control txtDescription' placeholder='Enter la description'/>");
+
+
+        const duration =$(this).parent().parent().find(".tdDuration").html();
+
+        $(this).parent().parent().find(".tdDuration").html("<input type='text' value='"+duration+"' class='form-control txtDuration' placeholder='Enter la durée'/>");
+
+        const price =$(this).parent().parent().find(".tdPrice").html();
+
+        $(this).parent().parent().find(".tdPrice").html("<input type='text' value='"+price+"' class='form-control txtPrice' placeholder='Enter le prix'/>");
+
+        $(this).parent().parent().find(".tdAction").html(rowUpdateButtonsPrestation);
+
+      });
+
+    ///////////////////////////
     function showAlert(id,msg){
       $(id).removeAttr('hidden');
       $(id).find("strong").html(msg);

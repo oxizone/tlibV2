@@ -6,6 +6,8 @@
     <title>Liste des locaux</title>
 </head>
 <body>
+    <span th:replace="layouts/manager_navbar :: manager_navbar"></span>
+
     <div data-th-if="${param.updateSuccess!= null}" class="alert  alert-success fade show alert-dismissible" role="alert" data-mdb-color="success" id="customxD" bis_skin_checked="1">
         <strong>Le local est modifié </strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -19,10 +21,16 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <div class="container">
+    <div class="container mt-5">
 
-      <h1 class="pt-5">Tous mes locaux</h1>
-
+      <h1 class="">Tous mes locaux</h1>
+        <div class="row pb-3">
+            <div class="col-md-12 text-right">
+                <a th:href="${'/manager/creation'}">
+                    <input type="button" id="btnAdd" class="btn btn-primary para" value="Ajouter" />
+                </a>
+            </div>
+        </div>
       <table class="table table-striped table-sm align-middle">
         <thead>
         <tr>

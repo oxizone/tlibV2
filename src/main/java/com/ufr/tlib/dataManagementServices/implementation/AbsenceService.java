@@ -1,7 +1,7 @@
 package com.ufr.tlib.dataManagementServices.implementation;
 
+import com.ufr.tlib.dataManagementServices.IAbsenceService;
 import com.ufr.tlib.excepetions.AbsenceNotFound;
-import com.ufr.tlib.excepetions.AddressNotFound;
 import com.ufr.tlib.models.Absence;
 import com.ufr.tlib.repository.IAbsenceDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AbsenceService implements IAbsenceService{
+public class AbsenceService implements IAbsenceService {
 
     @Autowired
     private IAbsenceDao absenceDao;
