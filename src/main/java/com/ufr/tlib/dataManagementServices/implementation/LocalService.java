@@ -4,6 +4,7 @@ import com.ufr.tlib.dataManagementServices.ILocalService;
 import com.ufr.tlib.dataManagementServices.IUserService;
 import com.ufr.tlib.excepetions.LocalNotFoundException;
 import com.ufr.tlib.excepetions.UserNotFoundException;
+import com.ufr.tlib.models.Etat;
 import com.ufr.tlib.models.Local;
 import com.ufr.tlib.models.User;
 import com.ufr.tlib.repository.ILocalDao;
@@ -32,7 +33,7 @@ public class LocalService implements ILocalService {
     public void addLocal(Local local, String username) throws UserNotFoundException {
         User manager = userService.getUserByUserName(username);
         local.setManager(manager);
-        local.setEnabled(false);
+        local.setEtat(Etat.INWAITING);
         localDao.save(local);
     }
 
@@ -45,6 +46,22 @@ public class LocalService implements ILocalService {
     public Page<Local> getAllLocalPage(int page, int size) {
         return localDao.findAll(PageRequest.of(page,size));
     }
+
+    @Override
+    public List<Local> getListEnableLocal() {
+        return localDao.findLocalByEtat(Etat.ENABLE);
+    }
+
+    @Override
+    public List<Local> getListDisableLocal() {
+        return localDao.findLocalByEtat(Etat.DISABLE);
+    }
+
+    @Override
+    public List<Local> getListWaitingLocal() {
+        return localDao.findLocalByEtat(Etat.INWAITING);
+    }
+
 
     @Override
     public Page<Local> getLocalPageByKeyword(String keyword, int page, int size) {
@@ -74,13 +91,14 @@ public class LocalService implements ILocalService {
 
     @Override
     public void disableLocal(Local local) {
-        local.setEnabled(false);
+        local.setEtat(Etat.DISABLE);
         localDao.save(local);
     }
 
     @Override
     public void enableLocal(Local local) {
-        local.setEnabled(true);
+        local.setEtat(Etat.ENABLE);
         localDao.save(local);
     }
+
 }

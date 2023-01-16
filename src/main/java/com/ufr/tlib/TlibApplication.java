@@ -2,10 +2,7 @@ package com.ufr.tlib;
 
 import com.ufr.tlib.dataManagementServices.implementation.LocalService;
 import com.ufr.tlib.dataManagementServices.implementation.UserService;
-import com.ufr.tlib.models.Local;
-import com.ufr.tlib.models.Role;
-import com.ufr.tlib.models.Service;
-import com.ufr.tlib.models.User;
+import com.ufr.tlib.models.*;
 import com.ufr.tlib.repository.IRoleDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -68,7 +65,7 @@ public class TlibApplication implements CommandLineRunner {
 
 
 		Local sallonCoiffure = Local.builder()
-				.enabled(true)
+				.etat(Etat.ENABLE)
 				.address("19 rue la republique, besançcon")
 				.email("sallon@gmail.com")
 				.phoneNumber("067263723")
@@ -78,7 +75,7 @@ public class TlibApplication implements CommandLineRunner {
 				.build();
 
 		Local sallonCoiffure2 = Local.builder()
-				.enabled(true)
+				.etat(Etat.ENABLE)
 				.address("19 rue la republique, besançcon")
 				.email("sallon@gmail.com")
 				.phoneNumber("067263723")
@@ -87,14 +84,12 @@ public class TlibApplication implements CommandLineRunner {
 				.name("L'atelier de coiffure")
 				.build();
 
-
 		roleRepository.save(userRole);
 		roleRepository.save(managerRole);
 		roleRepository.save(adminRole);
 		userService.addUser(user);
 		userService.addUser(manager);
 		userService.addUser(admin);
-
 
 		localService.addLocal(sallonCoiffure,manager.getUsername());
 		localService.addLocal(sallonCoiffure2,manager.getUsername());

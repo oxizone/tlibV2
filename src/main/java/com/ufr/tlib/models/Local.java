@@ -42,7 +42,8 @@ public class Local {
     @Email
     private String email;
 
-    private boolean enabled;
+    @Enumerated(EnumType.STRING)
+    private Etat etat;
 
     @Enumerated(EnumType.STRING)
     private Service service;
@@ -57,16 +58,4 @@ public class Local {
 
     @OneToMany(mappedBy = "local", fetch = FetchType.LAZY)
     private List<Image> images;
-
-    public User getManager() {
-        return manager;
-    }
-
-    public void setEnabled(boolean b){
-        enabled = b;
-    }
-
-    public void setManager(User manager) {
-        this.manager = manager;
-    }
 }

@@ -1,5 +1,6 @@
 package com.ufr.tlib.repository;
 
+import com.ufr.tlib.models.Etat;
 import com.ufr.tlib.models.Local;
 import com.ufr.tlib.models.Service;
 import com.ufr.tlib.models.User;
@@ -14,6 +15,7 @@ import java.util.List;
 public interface ILocalDao extends JpaRepository<Local, Long> {
 
     public List<Local> getLocalByManager(User manager);
+    public List<Local> findLocalByEtat(Etat etat);
     public Page<Local> findLocalByNameContains(String keyword, Pageable page);
     public Page<Local> findLocalByNameContainsAndService(String keyword, Service service, Pageable page);
 
