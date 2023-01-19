@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <span th:replace="layouts/head :: head"></span>
+    <title>Page d'accueil administrateur</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="text-center my-5">Bienvenue sur la page d'accueil administrateur</h1>
+        <div class="text-center">
+            <a href="/admin/liste/users" class="btn btn-primary m-2">Liste des utilisateurs</a>
+            <a href="/admin/liste/local" class="btn btn-primary m-2">Liste des locaux</a>
+            <a href="/admin/liste/local/inwaiting" class="btn btn-primary m-2">Liste des nouvelles demandes</a>
+        </div>
+    </div>
+</body>
+</html>

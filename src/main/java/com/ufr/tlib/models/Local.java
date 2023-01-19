@@ -46,7 +46,8 @@ public class Local {
     @Email
     private String email;
 
-    private boolean enabled;
+    @Enumerated(EnumType.STRING)
+    private Etat etat;
 
     @CreationTimestamp
     private Date createdAt;

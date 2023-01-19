@@ -1,7 +1,8 @@
 package com.ufr.tlib;
 
-import com.ufr.tlib.dataManagementServices.implementation.*;
+
 import com.ufr.tlib.models.*;
+import com.ufr.tlib.dataManagementServices.implementation.*;
 import com.ufr.tlib.repository.IRoleDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -26,6 +27,9 @@ public class TlibApplication implements CommandLineRunner {
 	private final AddressService addressService;
 	private final RDVService rdvService;
 
+	public TlibApplication() {
+	}
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(TlibApplication.class, args);
@@ -33,19 +37,10 @@ public class TlibApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Role managerRole = Role.builder().roleName("ROLE_MANAGER").build();
-		Role userRole = Role.builder().roleName("ROLE_USER").build();
 
-		User manager = User.builder()
-				.firstname("amine")
-				.lastname("RABHI")
-				.email("amine@gmail.com")
-				.username("manager")
-				.password("pass")
-				.phone("0665653263")
-				.enabled(true)
-				.role(managerRole)
-				.build();
+		Role userRole = Role.builder().roleName("ROLE_USER").build();
+		Role managerRole = Role.builder().roleName("ROLE_MANAGER").build();
+		Role adminRole = Role.builder().roleName("ROLE_ADMIN").build();
 
 		User user = User.builder()
 				.firstname("user")
@@ -58,9 +53,31 @@ public class TlibApplication implements CommandLineRunner {
 				.role(userRole)
 				.build();
 
+		User manager = User.builder()
+				.firstname("amine")
+				.lastname("RABHI")
+				.email("amine@gmail.com")
+				.username("manager")
+				.password("pass")
+				.phone("0665653263")
+				.enabled(true)
+				.role(managerRole)
+				.build();
+
+		User admin = User.builder()
+				.firstname("Prenom")
+				.lastname("Nom")
+				.email("admin@gmail.com")
+				.username("admin")
+				.password("admin")
+				.phone("0102030405")
+				.enabled(true)
+				.role(adminRole)
+				.build();
+
 
 		Local sallonCoiffure = Local.builder()
-				.enabled(true)
+				.etat(Etat.ENABLE)
 				.address("19 rue la republique, besançcon")
 				.email("sallon@gmail.com")
 				.phoneNumber("067263723")
@@ -69,11 +86,8 @@ public class TlibApplication implements CommandLineRunner {
 				.name("L'atelier de coiffure")
 				.build();
 
-
-
-
 		Local sallonCoiffure2 = Local.builder()
-				.enabled(true)
+				.etat(Etat.ENABLE)
 				.address("19 rue la republique, besançcon")
 				.email("sallon@gmail.com")
 				.phoneNumber("067263723")
@@ -93,7 +107,7 @@ public class TlibApplication implements CommandLineRunner {
 		Prestation coiffure = Prestation.builder()
 				.price(18)
 				.duration(45)
-				.name("Coiffure simple")
+				.titre("Coiffure simple")
 				.description("coiffure simple pour homme")
 				.local(sallonCoiffure)
 				.build();
@@ -119,9 +133,11 @@ public class TlibApplication implements CommandLineRunner {
 
 		roleRepository.save(managerRole);
 		roleRepository.save(userRole);
-		userService.addUser(manager);
+		roleRepository.save(managerRole);
+		roleRepository.save(adminRole);
 		userService.addUser(user);
-
+		userService.addUser(manager);
+		userService.addUser(admin);
 
 		localService.addLocal(sallonCoiffure,manager.getUsername());
 		localService.addLocal(sallonCoiffure2,manager.getUsername());
