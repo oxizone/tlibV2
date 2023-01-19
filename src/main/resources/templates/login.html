@@ -6,13 +6,13 @@
     <title>Login</title>
 </head>
 <body>
-
-<section class="vh-100">
-            <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1 pt-3">
+<span th:replace="layouts/home_navbar :: home_navbar"></span>
+    <div class="container mt-5">
+        <section class="vh-100">
+            <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1 pt-3 m-auto">
                 <form name="f" th:action="@{/login}" method="post">
                     <!-- Message-->
-                    <div class="alert alert-danger" data-th-if="${param.error != null    && session.SPRING_SECURITY_LAST_EXCEPTION != null}"
-                    >
+                    <div class="alert alert-danger" data-th-if="${param.error != null    && session.SPRING_SECURITY_LAST_EXCEPTION != null}">
                         <div data-th-if="${session.SPRING_SECURITY_LAST_EXCEPTION.message == 'Bad credentials'}">
                             Nom d'utilisateur ou mot de passe erroné
                         </div>
@@ -45,14 +45,11 @@
                     </div>
 
                     <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">Connect</button>
-
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Se Connecter</button>
                 </form>
             </div>
-        </div>
+        </section>
     </div>
-</section>
-
 </body>
 
 </html>

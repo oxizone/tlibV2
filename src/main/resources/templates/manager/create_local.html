@@ -6,11 +6,12 @@
   <title>Creer un local</title>
 </head>
 <body>
+  <span th:replace="layouts/manager_navbar :: manager_navbar"></span>
   <div data-th-if="${param.success!= null}" class="alert  alert-success fade show alert-dismissible" role="alert" data-mdb-color="success" id="customxD" bis_skin_checked="1">
     <strong>Le local est crée </strong>
     <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
   </div>
-  <div class="container">
+  <div class="container mt-5">
     <form th:action="@{/manager/addLocal}" method="post" th:object="${local}">
       <div class="mb-3">
         <label for="nom" class="form-label">Nom</label>

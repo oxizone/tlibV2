@@ -2,51 +2,576 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
   <span th:replace="layouts/head :: head"></span>
   <title>Details</title>
 </head>
 <body>
-<div class="container">
-  <div class="row">
-    <div class="col">
-      <table>
-        <tr>
-          <td>id</td>
-          <td>:</td>
-          <td>id</td>
-        </tr>
-        <tr>
-          <td>nom</td>
-          <td>:</td>
-          <td>name</td>
-        </tr>
-        <tr>
-          <td>Tel</td>
-          <td>:</td>
-          <td>045</td>
-        </tr>
-      </table>
+<span th:replace="layouts/manager_navbar :: manager_navbar"></span>
+<div hidden class="alert alert-danger fade show alert-dismissible" role="alert" data-bs-color="danger" id="errorAlert" bis_skin_checked="1">
+  <strong></strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<div hidden class="alert alert-success fade show  alert-dismissible" role="alert" data-bs-color="danger" id="succesAlert" bis_skin_checked="1">
+  <strong></strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<div class="container mt-5">
+  <h2>Local</h2>
+    <div class="row">
+      <div class="col-md-12 text-right">
+        <a th:href="${'/manager/local/edit/'+local.id}">
+          <input type="button" id="editLocal" class="btn btn-success para" value="Modifier" />
+        </a>
+      </div>
     </div>
-    <div class="col">
-      <table>
+  <div class="local shadow p-3 mb-5 mt-3 bg-body rounded">
+    <div class="row">
+      <div class="col">
+        <table>
+          <tr>
+            <td>id</td>
+            <td>:</td>
+            <td id="localId"  th:text="${local.id}"></td>
+          </tr>
+          <tr>
+            <td>nom</td>
+            <td>:</td>
+            <td th:text="${local.name}">name</td>
+          </tr>
+          <tr>
+            <td>Tel</td>
+            <td>:</td>
+            <td th:text="${local.PhoneNumber}">tel</td>
+          </tr>
+        </table>
+      </div>
+      <div class="col">
+        <table>
+          <tr>
+            <td>description</td>
+            <td>:</td>
+            <td th:text="${local.description}">description</td>
+          </tr>
+          <tr>
+            <td>adresse</td>
+            <td>:</td>
+            <td th:text="${local.address}">address</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>:</td>
+            <td th:text="${local.email}">mei@ddk.ckp</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2>Liste des artisans</h2>
+  <div class="row">
+    <div class="col-md-12 text-right">
+      <input type="button" id="btnAdd" class="btn btn-primary para" value="Ajouter" />
+    </div>
+  </div>
+  <div class="row pt-3">
+    <div class="col-md-12 col-sm-12 col-12 ">
+      <table id="tblData" class="table table-bordered table-hover table-striped shadow p-3 mb-5 bg-body rounded">
+        <thead>
         <tr>
-          <td>description</td>
-          <td>:</td>
-          <td>description</td>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th class="tdaction">Action</th>
         </tr>
-        <tr>
-          <td>adresse</td>
-          <td>:</td>
-          <td>address</td>
-        </tr>
-        <tr>
-          <td>Email</td>
-          <td>:</td>
-          <td>mei@ddk.ckp</td>
-        </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr th:each="artisan : ${local.artisans}" th:id="${artisan.id}">
+                <td class='tdFName' th:text="${artisan.firstName}">
+
+                </td>
+                <td class='tdLName' th:text="${artisan.lastName}">
+
+                </td>
+                <td class='tdAction'>
+                    <button class='btn btn-success btn-sm btn-edit' > Modifier </button>
+                    <button type="button" class="btn btn-sm btn-secondary showModal" data-bs-toggle="modal" data-bs-target="#absence" id="disable">Désactiver</button>
+                    <button class='btn btn-danger btn-sm' > Supprimer </button>
+                </td>
+
+            </tr>
+
+        </tbody>
       </table>
     </div>
   </div>
+
+  <h2>Liste des prestation</h2>
+  <div class="row">
+    <div class="col-md-12 text-right">
+      <input type="button" id="btnAddPrestation" class="btn btn-primary para" value="Ajouter" />
+    </div>
+  </div>
+  <div class="row pt-3">
+    <div class="col-md-12 col-sm-12 col-12 ">
+      <table id="tblDataPrestation" class="table table-bordered table-hover table-striped shadow p-3 mb-5 bg-body rounded">
+        <thead>
+        <tr>
+          <th>Titre</th>
+          <th>Description</th>
+          <th>Durée</th>
+          <th>Prix</th>
+          <th class="tdactionPrestation">Action</th>
+        </tr>
+        </thead>
+        <tbody id="tableBodyPrestation">
+        <tr th:each="prestation : ${local.prestations}" th:id="${prestation.id}">
+          <td class='tdTitre' th:text="${prestation.titre}">
+
+          </td>
+          <td class='tdDescription' th:text="${prestation.description}">
+
+          </td>
+          <td class='tdDuration' th:text="${prestation.duration}">
+
+          </td>
+          <td class='tdPrice' th:text="${prestation.price}">
+
+          </td>
+          <td class='tdActionPrestation'>
+            <button class='btn btn-success btn-sm btn-edit' > Modifier </button>
+            <button class='btn btn-danger btn-sm' > Supprimer </button>
+          </td>
+
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+
 </div>
+
+<!-------------------------- MODAL ---------------------------->
+<div class="modal fade" id="absence" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div hidden class="alert alert-danger fade show alert-dismissible" role="alert" data-bs-color="danger" id="DateError" bis_skin_checked="1">
+          <strong></strong>
+          <button type="button" class="btn-close"  aria-label="Close"></button>
+        </div>
+        <form>
+          <div class="form-group">
+            <label for="startDate" class="col-form-label">Date début:</label>
+            <input type="text" class="form-control" id="startDate">
+          </div>
+          <div class="form-group">
+            <label for="endDate" class="col-form-label">Date de retour:</label>
+            <input type="text" class="form-control" id="endDate">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="addAbsence" class="btn btn-primary">Ajouter</button>
+      </div>
+      <div class="listeAbsence p-3">
+          <h2>Liste des absences</h2>
+          <table class="table table-bordered" id="absenceTable">
+            <thead>
+            <tr>
+              <th>Date Début</th>
+              <th>Date fin</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+
+<script>
+  var emptyRow = "<tr><td colspan='4' class='text-center'> Pas d'artisans</td></tr>";
+  var emptyNewRow = "<tr class='trNewRow'>";
+
+  emptyNewRow = emptyNewRow + "    <td class='tdFName'>";
+  emptyNewRow = emptyNewRow + "        <input type='text' class='form-control txtFName' placeholder='Enter le nom'/>";
+  emptyNewRow = emptyNewRow + "    </td>";
+  emptyNewRow = emptyNewRow + "    <td class='tdLName'>";
+  emptyNewRow = emptyNewRow + "        <input type='text' class='form-control txtLName' placeholder='Enter le prenom'/>";
+  emptyNewRow = emptyNewRow + "    </td>";
+  emptyNewRow = emptyNewRow + "    <td class='tdAction'>";
+  emptyNewRow = emptyNewRow + "        <button class='btn btn-sm btn-success btn-save'> Enregistrer</button>";
+  emptyNewRow = emptyNewRow + "        <button class='btn btn-sm btn-success btn-cancel'> Annuler</button>";
+  emptyNewRow = emptyNewRow + "    </td>";
+  emptyNewRow = emptyNewRow + "</tr>";
+  var rowButtons ="<button class='btn btn-success btn-sm btn-edit' > Modifier </button> <button type='button' class='btn btn-sm btn-secondary' >Désactiver</button> <button class='btn btn-danger btn-sm' > Supprimer </button> ";
+  var rowUpdateButtons ="<button class='btn btn-success btn-sm btn-save' > Update </button> ";
+
+
+  var emptyRowPrestation = "<tr><td colspan='5' class='text-center'> Pas de prestation</td></tr>";
+  var emptyNewRowPrestation = "<tr class='trNewRowPrestation'>";
+
+  emptyNewRowPrestation = emptyNewRowPrestation + "    <td class='tdTitre'>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "        <input type='text' class='form-control txtTitre' placeholder='Enter le titre'/>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    </td>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    <td class='tdDescription'>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "        <input type='text' class='form-control txtDescription' placeholder='Enter la description'/>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    </td>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    <td class='tdDuration'>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "        <input type='number' class='form-control txtDuration' placeholder='Entrer la durée'/>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    </td>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    <td class='tdPrice'>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "        <input type='number' class='form-control txtPrice' placeholder='Entrer le prix'/>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    </td>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    <td class='tdAction'>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "        <button class='btn btn-sm btn-success btn-save'> Enregistrer</button>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "        <button class='btn btn-sm btn-success btn-cancel'> Annuler</button>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "    </td>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "</tr>";
+  var rowButtonsPrestation ="<button class='btn btn-success btn-sm btn-edit' > Modifier </button>  <button class='btn btn-danger btn-sm' > Supprimer </button> ";
+  var rowUpdateButtonsPrestation ="<button class='btn btn-success btn-sm btn-save' > Update </button> ";
+
+
+
+  $(document).ready(function () {
+
+    const localId = $("#localId").text();
+    const path = "/manager/local/"+localId;
+
+    if ($('#tableBody').children().length == 0){
+      $("#tblData tbody").append(emptyRow); // adding empty row on page load
+    }
+    $("#btnAdd").click(function () {
+      if ($("#tblData tbody").children().children().length == 1) {
+        $("#tblData tbody").html("");
+      }
+      $("#tblData tbody").append(emptyNewRow); // appending dynamic string to table tbody
+    });
+
+    $('#tblData').on('click', '.btn-save', function () {
+      const artisanId = $(this).parent().parent().attr('id');
+
+      const fName =  $(this).parent().parent().find(".txtFName").val();
+      $(this).parent().parent().find(".tdFName").html(""+fName+"");
+      const lName =  $(this).parent().parent().find(".txtLName").val();
+      $(this).parent().parent().find(".tdLName").html(""+lName+"");
+
+
+      $(this).parent().parent().find(".tdAction").html(rowButtons);
+      if (artisanId == undefined){
+        $.ajax({
+          type: 'POST',
+          url: '/manager/artisan',
+          data: {
+            localId: localId,
+            fName: fName,
+            lName: lName
+          },
+          success: function (code) {
+            window.location = path;
+          }
+        });
+      }else{
+        $.ajax({
+          type: 'PUT',
+          url: '/manager/artisan',
+          data: {
+            artisanId: artisanId,
+            fName: fName,
+            lName: lName,
+            avatar : avatar
+          },
+          success: function (code) {
+            window.location = path;
+          }
+        });
+      }
+
+
+    });
+
+
+    $('#tblData').on('click', '.btn-danger', function () { // registering function for delete button
+      const artisanId = $(this).parent().parent().attr('id');
+      $.ajax({
+        type: 'DELETE',
+        url: '/manager/artisan',
+        data: {
+          artisanId: artisanId,
+        },
+        success: function (code) {
+
+          if (code=="OK")
+          {
+            window.location = path; errorAlert
+          }else
+          {
+            $("#errorAlert").removeAttr('hidden');
+            if (code == "NOT_FOUND")
+              $("#errorAlert strong").html("Artisan introuvable")
+            else if (code == "UNAUTHORIZED")
+              $("#errorAlert strong").html("Action pas autorisé")
+            else if (code == "FAILED_DEPENDENCY")
+              $("#errorAlert strong").html("Impossible de supprimer l'artisan (Dependance).")
+            else
+              $("#errorAlert strong").html("Erreur")
+          }
+
+        }
+      });
+    });
+
+
+    $('#tblData').on('click', '.btn-cancel', function () {
+      $(this).parent().parent().remove();
+    });
+
+    $('#tblData').on('click', '.btn-edit', function () {
+
+      const artisanId = $(this).parent().parent().attr('id');
+
+      const fName =$(this).parent().parent().find(".tdFName").html();
+
+      $(this).parent().parent().find(".tdFName").html("<input type='text' value='"+fName+"' class='form-control txtFName' placeholder='Enter Nom'/>");
+
+
+      const lName =$(this).parent().parent().find(".tdLName").html();
+
+      $(this).parent().parent().find(".tdLName").html("<input type='text' value='"+lName+"' class='form-control txtLName' placeholder='Enter prenom'/>");
+
+
+      const avatar =$(this).parent().parent().find(".tdAvatar").html();
+
+      $(this).parent().parent().find(".tdAvatar").html("<input type='text' value='"+avatar+"' class='form-control txtAvatar' placeholder='Enter avatar'/>");
+      $(this).parent().parent().find(".tdAction").html(rowUpdateButtons);
+
+    });
+
+    $("#startDate").datepicker({
+      minDate: new Date(),
+      dateFormat: "dd-mm-yy"
+    });
+    $("#endDate").datepicker({
+      minDate: new Date(),
+      dateFormat: "dd-mm-yy"
+    });
+
+    $('.showModal').on('click', function (event) {
+      $("#absence #DateError").attr("hidden",true);
+      $("#startDate").val('');
+      $("#endDate").val('');
+      //var button = $(event.relatedTarget); // Button that triggered the modal
+      var name = $(this).parent().parent().find(".tdFName").html() + " " + $(this).parent().parent().find(".tdLName").html(); // Extract info from data-* attributes
+
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $('#absence');
+      modal.find('.modal-title').text('Durée d\'absence de ' + name);
+
+      modal.find('.modal-title').attr('id',$(this).parent().parent().attr('id'));
+    });
+
+
+    $('#addAbsence').on('click', function () {
+
+      let artisanId = $('#absence').find('.modal-title').attr("id");
+
+
+      let start = $("#startDate").datepicker("getDate");
+      let end = $("#endDate").datepicker("getDate");
+
+      if (end == null || start == null || start > end) {
+        $('#DateError').removeAttr("hidden");
+        $('#DateError strong').html("Dates erronés");
+      } else {
+        $.ajax({
+          type: 'POST',
+          url: '/manager/absence',
+          data: {
+            artisanId: artisanId,
+            startDate: start,
+            endDate: end
+          },
+          success: function (code) {
+            if (code == "OK") {
+              $("#absence").modal('toggle');
+              showAlert("#succesAlert", "Periode ajouté!")
+            } else {
+              $('#DateError').removeAttr("hidden");
+              $('#DateError strong').html("Période invalide!");
+            }
+          },
+          error: function() {
+            showAlert("#succesAlert", "Erreur : Absence n'est pas ajouté");
+          }
+        });
+
+      }
+
+      const tableBody = $('#absenceTable tbody');
+      tableBody.html("");
+      $.ajax({
+        type: 'get',
+        url: '/manager/artisant/absence/'+artisanId,
+        success: function (response) {
+          let newrows = "";
+          for(let item of response){ //populate table
+            newrows += "<tr><td>"+item.startDate.slice(0,10)+"</td><td>"+item.endDate.slice(0,10)+"</td></tr>"
+          }
+          tableBody.html(newrows);
+        }
+      });
+    });
+
+
+    ///////////////////////////////////// Prestation //////////////////////////////////////////::
+
+      if ($('#tableBodyPrestation').children().length == 0){
+        $("#tblDataPrestation tbody").append(emptyRowPrestation); // adding empty row on page load
+      }
+      $("#btnAddPrestation").click(function () {
+        if ($("#tblDataPrestation tbody").children().children().length == 1) {
+          $("#tblDataPrestation tbody").html("");
+        }
+        $("#tblDataPrestation tbody").append(emptyNewRowPrestation); // appending dynamic string to table tbody
+      });
+
+      $('#tblDataPrestation').on('click', '.btn-save', function () {
+        const prestationId = $(this).parent().parent().attr('id');
+
+        const titre =  $(this).parent().parent().find(".txtTitre").val();
+        $(this).parent().parent().find(".tdTitre").html(""+titre+"");
+        const description =  $(this).parent().parent().find(".txtDescription").val();
+        $(this).parent().parent().find(".tdDescription").html(""+description+"");
+        const duration =  $(this).parent().parent().find(".txtDuration").val();
+        $(this).parent().parent().find(".tdDuration").html(""+duration+"");
+        const price =  $(this).parent().parent().find(".txtPrice").val();
+        $(this).parent().parent().find(".tdPrice").html(""+price+"");
+        $(this).parent().parent().find(".tdAction").html(rowButtonsPrestation);
+
+        if (prestationId == undefined){
+          $.ajax({
+            type: 'POST',
+            url: '/manager/prestation',
+            data: {
+              localId: localId,
+              titre: titre,
+              description: description,
+              duration: duration,
+              price : price
+            },
+            success: function (code) {
+              window.location = path;
+            },
+            error: function() {
+              showAlert("#succesAlert", "Erreur : Presation n'est pas ajouté");
+            }
+          });
+        }else{
+          $.ajax({
+            type: 'PUT',
+            url: '/manager/prestation',
+            data: {
+              prestationId: prestationId,
+              titre: titre,
+              description: description,
+              duration: duration,
+              price : price
+            },
+            success: function (code) {
+              window.location = path;
+            }
+          });
+        }
+
+      });
+
+
+      $('#tblDataPrestation').on('click', '.btn-danger', function () { // registering function for delete button
+        const prestationId = $(this).parent().parent().attr('id');
+        $.ajax({
+          type: 'DELETE',
+          url: '/manager/prestation',
+          data: {
+            prestationId: prestationId,
+          },
+          success: function (code) {
+
+            if (code=="OK")
+            {
+              window.location = path;
+            }else
+            {
+              $("#errorAlert").removeAttr('hidden');
+              if (code == "NOT_FOUND")
+                $("#errorAlert strong").html("Artisan introuvable")
+              else if (code == "UNAUTHORIZED")
+                $("#errorAlert strong").html("Action pas autorisé")
+              else if (code == "FAILED_DEPENDENCY")
+                $("#errorAlert strong").html("Impossible de supprimer l'artisan (Dependance).")
+              else
+                $("#errorAlert strong").html("Erreur")
+            }
+
+          }
+        });
+      });
+
+
+      $('#tblDataPrestation').on('click', '.btn-cancel', function () {
+        $(this).parent().parent().remove();
+      });
+
+      $('#tblDataPrestation').on('click', '.btn-edit', function () { // show form
+
+        const titre =$(this).parent().parent().find(".tdTitre").html();
+
+        $(this).parent().parent().find(".tdTitre").html("<input type='text' value='"+titre+"' class='form-control txtTitre' placeholder='Enter le titre'/>");
+
+
+        const description =$(this).parent().parent().find(".tdDescription").html();
+
+        $(this).parent().parent().find(".tdDescription").html("<input type='text' value='"+description+"' class='form-control txtDescription' placeholder='Enter la description'/>");
+
+
+        const duration =$(this).parent().parent().find(".tdDuration").html();
+
+        $(this).parent().parent().find(".tdDuration").html("<input type='text' value='"+duration+"' class='form-control txtDuration' placeholder='Enter la durée'/>");
+
+        const price =$(this).parent().parent().find(".tdPrice").html();
+
+        $(this).parent().parent().find(".tdPrice").html("<input type='text' value='"+price+"' class='form-control txtPrice' placeholder='Enter le prix'/>");
+
+        $(this).parent().parent().find(".tdAction").html(rowUpdateButtonsPrestation);
+
+      });
+
+    ///////////////////////////
+    function showAlert(id,msg){
+      $(id).removeAttr('hidden');
+      $(id).find("strong").html(msg);
+    }
+    $('#DateError button').on('click', function () {
+      $(this).parent().attr("hidden",true);
+    });
+
+  });
+</script>
+<span th:replace="layouts/foot :: foot"></span>
 </body>
 </html>

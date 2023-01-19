@@ -6,7 +6,8 @@
     <title>Modifiers</title>
 </head>
 <body>
-    <div class="container">
+    <span th:replace="layouts/manager_navbar :: manager_navbar"></span>
+    <div class="container mt-5">
       <form th:action="@{/manager/local/update}" method="post" th:object="${local}">
         <div class="mb-3">
             <input th:field="*{id}" hidden/>

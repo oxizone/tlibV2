@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <span th:replace="layouts/head :: head"></span>
+    <title>Utilisateurs</title>
+</head>
+<body>
+<span th:replace="layouts/admin_navbar :: admin_navbar"></span>
+    <div class="container">
+    <table class="table table-striped table-sm align-middle">
+        <thead>
+        <tr>
+            <th>Nom d'utilisateur</th>
+            <th>Email</th>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Numéro de téléphone</th>
+        </tr>
+        <thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:utext="${user.username}"></td>
+            <td th:utext="${user.email}"></td>
+            <td th:utext="${user.lastname}"></td>
+            <td th:utext="${user.firstname}"></td>
+            <td th:utext="${user.phone}"></td>
+            <td >
+                <span th:if="${user.enabled == true}">
+                    <a th:href="${'/admin/users/bloquer/'+user.id}" id="edit">
+                        <button type="button" class="btn btn-warning">Bloquer</button>
+                    </a>
+                </span>
+                <span th:if="${user.enabled == false}" >
+                      <a th:href="${'/admin/users/debloquer/'+user.id}" id="edit">
+                        <button type="button" class="btn btn-warning">Débloquer</button>
+                      </a>
+                </span>
+                <span>
+                    <a th:href="${'/admin/users/delete/'+user.id}" id="supprimer">
+                      <button type="button" class="btn btn-danger">Supprimer</button>
+                    </a>
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+</body>
+</html>

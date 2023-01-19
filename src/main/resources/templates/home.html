@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <span th:replace="layouts/head :: head"></span>
+    <title>Accueil</title>
+</head>
+<body>
+<div sec:authorize="isAuthenticated()">
+    <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+        <span th:replace="layouts/admin_navbar :: admin_navbar"></span>
+    </div>
+    <div sec:authorize="hasAuthority('ROLE_USER')">
+        <span th:replace="client/client_navbar :: client_navbar"></span>
+    </div>
+    <div sec:authorize="hasAuthority('ROLE_MANAGER')">
+        <span th:replace="layouts/manager_navbar :: manager_navbar"></span>
+    </div>
+</div>
+<div sec:authorize="isAnonymous()">
+    <span th:replace="layouts/home_navbar :: home_navbar"></span>
+</div>
+<div class="jumbotron text-center">
+    <h1 class="display-4">Bienvenue sur T-Lib</h1>
+    <p class="lead">Le gain de temps et d'argent</p>
+    <hr class="my-4">
+    <!--<div class="text-center">
+        <a class="btn btn-primary btn-lg" href="/login" role="button">Se connecter</a>
+        <a class="btn btn-secondary btn-lg" href="/signup" role="button">S'inscrire</a>
+    </div>-->
+</div>
+</body>
+</html>

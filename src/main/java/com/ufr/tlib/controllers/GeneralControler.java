@@ -20,6 +20,11 @@ public class GeneralControler {
     @Autowired
     private IUserService userService;
 
+    @GetMapping("/")
+    public String home(){
+        return "home";
+    }
+
     @GetMapping("/signup")
     public String signup(Model model){
 
