@@ -1,0 +1,15 @@
+version: '3.3'
+
+services:
+
+  app:
+    image: tlib
+    container_name: tlib
+    build:
+      context: .                          #docker file path (. means root directory)
+      dockerfile: Dockerfile
+    ports:
+      - "8173:8173"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://172.20.128.4/tlib
