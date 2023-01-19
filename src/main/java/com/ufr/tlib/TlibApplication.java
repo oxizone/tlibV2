@@ -83,7 +83,7 @@ public class TlibApplication implements CommandLineRunner {
 				.firstName("first")
 				.lastName("last")
 				.avatar("avat")
-				.local(sallonCoiffure2)
+				.local(sallonCoiffure)
 				.build();
 
 

@@ -14,8 +14,8 @@ public class PrestationService implements IPrestationService {
     private IPrestationDao prestationDao;
 
     @Override
-    public void getPrestationById(Long id) throws PrestationNotFound {
-        prestationDao.findById(id).orElseThrow(PrestationNotFound::new);
+    public Prestation getPrestationById(Long id) throws PrestationNotFound {
+        return prestationDao.findById(id).orElseThrow(PrestationNotFound::new);
     }
 
     @Override

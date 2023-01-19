@@ -31,7 +31,7 @@
                             <span class="muted-text" th:text="${prestation.price}+ ' €'"></span>
                             <span class="muted-text">-</span>
                             <span class="muted-text" th:text="${prestation.duration} + ' min'"></span>
-                            <a class="btn btn-dark"
+                            <a class="btn btn-dark"  th:href="@{'/user/locaux/' + ${local.id} + '/services/' + ${prestation.id} +'/reservation'}"
                             >Select</a>
                         </div>
                     </div>

@@ -74,3 +74,103 @@ footer{
     margin-right: 10px;
     display: inline-block;
 }
+
+/********* Reservation page ******************/
+.artisan-card {
+    border-radius: 3px;
+    border: 0.5px solid rgb(160, 160, 160);
+    display: flex;
+    align-items: center;
+}
+
+.artisan-card:hover {
+    background-color: rgb(239, 239, 239);
+}
+
+#profileImage {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #000;
+    font-size: 24px;
+    color: #fff;
+    text-align: center;
+    line-height: 45px;
+    margin-right: 10px;
+}
+
+.disponibilty {
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+}
+
+.week-day {
+    width: 12%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.creneau {
+    background-color: rgb(216, 216, 216);
+    width: 100%;
+    margin: 5px;
+    border-radius: 3px;
+    padding: 5px;
+    text-align: center;
+}
+
+/*.creneau:hover {*/
+/*    background-color: rgb(201, 201, 201);*/
+/*}*/
+
+.creneau-selected {
+    background-color: black;
+    color: #eee;
+}
+
+.creneau-reserve {
+    background-color: rgb(245, 245, 245);
+    cursor: not-allowed;
+}
+
+.actions-section {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+@media (max-width: 1000px) {
+    .week-day {
+        width: 14%;
+    }
+}
+
+@media (max-width: 750px) {
+    .week-day {
+        width: 14%;
+    }
+
+    .disponibilty {
+        flex-direction: column;
+    }
+
+    .week-day {
+        text-align: center;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid black;
+        margin: 5px;
+    }
+
+    .creneau {
+        background-color: rgb(216, 216, 216);
+        width: 30%;
+        margin: 5px;
+        border-radius: 3px;
+        padding: 5px;
+        text-align: center;
+    }
+}
