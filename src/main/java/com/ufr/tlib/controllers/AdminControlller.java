@@ -34,11 +34,11 @@ public class AdminControlller {
         return root + "indexAdmin";
     }
 
-    /*@GetMapping("/liste/users")
+    @GetMapping("/liste/users")
     public String listeUsers(Model model) throws UserNotFoundException {
         model.addAttribute("users",userService.getListUsers());
         return root + "liste_users";
-    }*/
+    }
 
     @GetMapping("/liste/local")
     public String listeLocal(Model model) throws UserNotFoundException {

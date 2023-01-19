@@ -73,31 +73,31 @@ public class TlibApplication implements CommandLineRunner {
 				.build();
 
 
-		Local sallonCoiffure = Local.builder()
+		Local salonCoiffure = Local.builder()
 				.etat(Etat.ENABLE)
-				.address("19 rue la republique, besançcon")
-				.email("sallon@gmail.com")
+				.address("2 chemin des Tilleroyes, Besançon")
+				.email("barber-tilleroyes@gmail.com")
 				.phoneNumber("067263723")
-				.description("Sallon de coiffure")
+				.description("Salon de coiffure")
 				.service(Service.GARAGE)
-				.name("L'atelier de coiffure")
+				.name("L'Atelier")
 				.build();
 
-		Local sallonCoiffure2 = Local.builder()
+		Local salonCoiffure2 = Local.builder()
 				.etat(Etat.ENABLE)
-				.address("19 rue la republique, besançcon")
-				.email("sallon@gmail.com")
+				.address("19 rue la République, Besançon")
+				.email("salon@gmail.com")
 				.phoneNumber("067263723")
-				.description("Sallon de coiffure")
+				.description("Salon de coiffure")
 				.service(Service.SALON_COIFFURE)
-				.name("L'atelier de coiffure")
+				.name("Barber Shop")
 				.build();
 
 		Artisan artisan =  Artisan.builder()
 				.firstName("first")
 				.lastName("last")
 				.avatar("avat")
-				.local(sallonCoiffure)
+				.local(salonCoiffure)
 				.build();
 
 
@@ -106,19 +106,19 @@ public class TlibApplication implements CommandLineRunner {
 				.duration(45)
 				.titre("Coiffure simple")
 				.description("coiffure simple pour homme")
-				.local(sallonCoiffure)
+				.local(salonCoiffure)
 				.build();
 
 		Address address = Address.builder()
 				.city("Besançon")
 				.zipCode("25000")
-				.local(sallonCoiffure)
+				.local(salonCoiffure)
 				.build();
 
 		Address addres2 = Address.builder()
 				.city("Besançon")
 				.zipCode("25000")
-				.local(sallonCoiffure2)
+				.local(salonCoiffure2)
 				.build();
 
 		RDV rdv = RDV.builder()
@@ -136,8 +136,8 @@ public class TlibApplication implements CommandLineRunner {
 		userService.addUser(manager);
 		userService.addUser(admin);
 
-		localService.addLocal(sallonCoiffure,manager.getUsername());
-		localService.addLocal(sallonCoiffure2,manager.getUsername());
+		localService.addLocal(salonCoiffure,manager.getUsername());
+		localService.addLocal(salonCoiffure2,manager.getUsername());
 
 		artisanService.addArtisan(artisan);
 
