@@ -8,7 +8,7 @@
 </head>
 <body>
 <span th:replace="layouts/manager_navbar :: manager_navbar"></span>
-<div hidden class="alert alert-danger fade show alert-dismissible" role="alert" data-bs-color="danger" id="artisanNotFound" bis_skin_checked="1">
+<div hidden class="alert alert-danger fade show alert-dismissible" role="alert" data-bs-color="danger" id="errorAlert" bis_skin_checked="1">
   <strong></strong>
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
@@ -37,12 +37,12 @@
           <tr>
             <td>nom</td>
             <td>:</td>
-            <td>name</td>
+            <td th:text="${local.name}">name</td>
           </tr>
           <tr>
             <td>Tel</td>
             <td>:</td>
-            <td>045</td>
+            <td th:text="${local.PhoneNumber}">tel</td>
           </tr>
         </table>
       </div>
@@ -51,17 +51,17 @@
           <tr>
             <td>description</td>
             <td>:</td>
-            <td>description</td>
+            <td th:text="${local.description}">description</td>
           </tr>
           <tr>
             <td>adresse</td>
             <td>:</td>
-            <td>address</td>
+            <td th:text="${local.address}">address</td>
           </tr>
           <tr>
             <td>Email</td>
             <td>:</td>
-            <td>mei@ddk.ckp</td>
+            <td th:text="${local.email}">mei@ddk.ckp</td>
           </tr>
         </table>
       </div>
@@ -81,7 +81,6 @@
         <tr>
             <th>Nom</th>
             <th>Prenom</th>
-            <th>Avatar</th>
             <th class="tdaction">Action</th>
         </tr>
         </thead>
@@ -93,12 +92,9 @@
                 <td class='tdLName' th:text="${artisan.lastName}">
 
                 </td>
-                <td class='tdAvatar' th:text="${artisan.avatar}">
-
-                </td>
                 <td class='tdAction'>
                     <button class='btn btn-success btn-sm btn-edit' > Modifier </button>
-                    <button type="button" class="btn btn-sm btn-secondary showModal" data-bs-toggle="modal" data-bs-target="#absence" >Désactiver</button>
+                    <button type="button" class="btn btn-sm btn-secondary showModal" data-bs-toggle="modal" data-bs-target="#absence" id="disable">Désactiver</button>
                     <button class='btn btn-danger btn-sm' > Supprimer </button>
                 </td>
 
@@ -187,6 +183,20 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" id="addAbsence" class="btn btn-primary">Ajouter</button>
       </div>
+      <div class="listeAbsence p-3">
+          <h2>Liste des absences</h2>
+          <table class="table table-bordered" id="absenceTable">
+            <thead>
+            <tr>
+              <th>Date Début</th>
+              <th>Date fin</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+      </div>
     </div>
   </div>
 </div>
@@ -203,9 +213,6 @@
   emptyNewRow = emptyNewRow + "    </td>";
   emptyNewRow = emptyNewRow + "    <td class='tdLName'>";
   emptyNewRow = emptyNewRow + "        <input type='text' class='form-control txtLName' placeholder='Enter le prenom'/>";
-  emptyNewRow = emptyNewRow + "    </td>";
-  emptyNewRow = emptyNewRow + "    <td class='tdAvatar'>";
-  emptyNewRow = emptyNewRow + "        <input type='text' class='form-control txtAvatar' placeholder='Entrer avatar'/>";
   emptyNewRow = emptyNewRow + "    </td>";
   emptyNewRow = emptyNewRow + "    <td class='tdAction'>";
   emptyNewRow = emptyNewRow + "        <button class='btn btn-sm btn-success btn-save'> Enregistrer</button>";
@@ -226,10 +233,10 @@
   emptyNewRowPrestation = emptyNewRowPrestation + "        <input type='text' class='form-control txtDescription' placeholder='Enter la description'/>";
   emptyNewRowPrestation = emptyNewRowPrestation + "    </td>";
   emptyNewRowPrestation = emptyNewRowPrestation + "    <td class='tdDuration'>";
-  emptyNewRowPrestation = emptyNewRowPrestation + "        <input type='text' class='form-control txtDuration' placeholder='Entrer la durée'/>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "        <input type='number' class='form-control txtDuration' placeholder='Entrer la durée'/>";
   emptyNewRowPrestation = emptyNewRowPrestation + "    </td>";
   emptyNewRowPrestation = emptyNewRowPrestation + "    <td class='tdPrice'>";
-  emptyNewRowPrestation = emptyNewRowPrestation + "        <input type='text' class='form-control txtPrice' placeholder='Entrer le prix'/>";
+  emptyNewRowPrestation = emptyNewRowPrestation + "        <input type='number' class='form-control txtPrice' placeholder='Entrer le prix'/>";
   emptyNewRowPrestation = emptyNewRowPrestation + "    </td>";
   emptyNewRowPrestation = emptyNewRowPrestation + "    <td class='tdAction'>";
   emptyNewRowPrestation = emptyNewRowPrestation + "        <button class='btn btn-sm btn-success btn-save'> Enregistrer</button>";
@@ -263,10 +270,9 @@
       $(this).parent().parent().find(".tdFName").html(""+fName+"");
       const lName =  $(this).parent().parent().find(".txtLName").val();
       $(this).parent().parent().find(".tdLName").html(""+lName+"");
-      const avatar =  $(this).parent().parent().find(".txtAvatar").val();
-      $(this).parent().parent().find(".tdAvatar").html(""+avatar+"");
-      $(this).parent().parent().find(".tdAction").html(rowButtons);
 
+
+      $(this).parent().parent().find(".tdAction").html(rowButtons);
       if (artisanId == undefined){
         $.ajax({
           type: 'POST',
@@ -274,8 +280,7 @@
           data: {
             localId: localId,
             fName: fName,
-            lName: lName,
-            avatar : avatar
+            lName: lName
           },
           success: function (code) {
             window.location = path;
@@ -313,18 +318,18 @@
 
           if (code=="OK")
           {
-            window.location = path;
+            window.location = path; errorAlert
           }else
           {
-            $("#artisanNotFound").removeAttr('hidden');
+            $("#errorAlert").removeAttr('hidden');
             if (code == "NOT_FOUND")
-              $("#artisanNotFound strong").html("Artisan introuvable")
+              $("#errorAlert strong").html("Artisan introuvable")
             else if (code == "UNAUTHORIZED")
-              $("#artisanNotFound strong").html("Action pas autorisé")
+              $("#errorAlert strong").html("Action pas autorisé")
             else if (code == "FAILED_DEPENDENCY")
-              $("#artisanNotFound strong").html("Impossible de supprimer l'artisan (Dependance).")
+              $("#errorAlert strong").html("Impossible de supprimer l'artisan (Dependance).")
             else
-              $("#artisanNotFound strong").html("Erreur")
+              $("#errorAlert strong").html("Erreur")
           }
 
         }
@@ -410,12 +415,29 @@
               $('#DateError').removeAttr("hidden");
               $('#DateError strong').html("Période invalide!");
             }
-
+          },
+          error: function() {
+            showAlert("#succesAlert", "Erreur : Absence n'est pas ajouté");
           }
         });
 
       }
+
+      const tableBody = $('#absenceTable tbody');
+      tableBody.html("");
+      $.ajax({
+        type: 'get',
+        url: '/manager/artisant/absence/'+artisanId,
+        success: function (response) {
+          let newrows = "";
+          for(let item of response){ //populate table
+            newrows += "<tr><td>"+item.startDate.slice(0,10)+"</td><td>"+item.endDate.slice(0,10)+"</td></tr>"
+          }
+          tableBody.html(newrows);
+        }
+      });
     });
+
 
     ///////////////////////////////////// Prestation //////////////////////////////////////////::
 
@@ -435,11 +457,11 @@
         const titre =  $(this).parent().parent().find(".txtTitre").val();
         $(this).parent().parent().find(".tdTitre").html(""+titre+"");
         const description =  $(this).parent().parent().find(".txtDescription").val();
-        $(this).parent().parent().find(".txtDescription").html(""+description+"");
+        $(this).parent().parent().find(".tdDescription").html(""+description+"");
         const duration =  $(this).parent().parent().find(".txtDuration").val();
-        $(this).parent().parent().find(".txtDuration").html(""+duration+"");
+        $(this).parent().parent().find(".tdDuration").html(""+duration+"");
         const price =  $(this).parent().parent().find(".txtPrice").val();
-        $(this).parent().parent().find(".txtPrice").html(""+price+"");
+        $(this).parent().parent().find(".tdPrice").html(""+price+"");
         $(this).parent().parent().find(".tdAction").html(rowButtonsPrestation);
 
         if (prestationId == undefined){
@@ -455,6 +477,9 @@
             },
             success: function (code) {
               window.location = path;
+            },
+            error: function() {
+              showAlert("#succesAlert", "Erreur : Presation n'est pas ajouté");
             }
           });
         }else{
@@ -492,15 +517,15 @@
               window.location = path;
             }else
             {
-              $("#artisanNotFound").removeAttr('hidden');
+              $("#errorAlert").removeAttr('hidden');
               if (code == "NOT_FOUND")
-                $("#artisanNotFound strong").html("Artisan introuvable")
+                $("#errorAlert strong").html("Artisan introuvable")
               else if (code == "UNAUTHORIZED")
-                $("#artisanNotFound strong").html("Action pas autorisé")
+                $("#errorAlert strong").html("Action pas autorisé")
               else if (code == "FAILED_DEPENDENCY")
-                $("#artisanNotFound strong").html("Impossible de supprimer l'artisan (Dependance).")
+                $("#errorAlert strong").html("Impossible de supprimer l'artisan (Dependance).")
               else
-                $("#artisanNotFound strong").html("Erreur")
+                $("#errorAlert strong").html("Erreur")
             }
 
           }

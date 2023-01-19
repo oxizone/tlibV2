@@ -16,8 +16,8 @@ public class ArtisanService implements IArtisanService {
     private IArtisanDao artisanDao;
 
     @Override
-    public void addArtisan(Artisan artisan) {
-        artisanDao.save(artisan);
+    public Artisan addArtisan(Artisan artisan) {
+       return artisanDao.save(artisan);
     }
 
     @Override

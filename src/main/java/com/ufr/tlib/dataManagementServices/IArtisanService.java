@@ -6,7 +6,7 @@ import com.ufr.tlib.models.Artisan;
 import java.util.List;
 
 public interface IArtisanService {
-    void addArtisan(Artisan artisan);
+    Artisan addArtisan(Artisan artisan);
     Artisan getArtisanById(Long id) throws ArtisanNotFound;
 
     void updateArtisan(Artisan artisan);

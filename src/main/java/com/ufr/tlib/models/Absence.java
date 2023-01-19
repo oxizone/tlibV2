@@ -1,5 +1,6 @@
 package com.ufr.tlib.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -19,11 +20,13 @@ public class Absence {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
 
-    @Column(columnDefinition = "DATE")
+    @Temporal(TemporalType.DATE)
     private Date startDate;
 
-    @Column(columnDefinition = "DATE")
+    @Temporal(TemporalType.DATE)
     private Date endDate;
+
+    @JsonIgnore
     @ManyToOne
     private Artisan artisan;
 
