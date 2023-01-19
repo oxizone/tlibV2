@@ -14,7 +14,7 @@
         <div class="rdv" th:each="rdv : ${rdvs}">
             <div class="rdv-details">
                 <div class="prestation mb-2">
-                    <span class="prestation-name" th:text="${rdv.prestation.name}"></span>
+                    <span class="prestation-name" th:text="${rdv.prestation.titre}"></span>
                     <span class="artisan text-muted" th:text="' Avec ' + ${rdv.artisan.firstName}"></span>
                 </div>
                 <h6 th:text="'Le '+${#temporals.format(rdv.date, 'dd-MM-yyyy à HH:mm')}"></h6>

@@ -11,7 +11,7 @@
         <span th:replace="layouts/admin_navbar :: admin_navbar"></span>
     </div>
     <div sec:authorize="hasAuthority('ROLE_USER')">
-        <span th:replace="client/client_navbar :: client_navbar"></span>
+        <span th:replace="client/client_navbar :: user_navbar"></span>
     </div>
     <div sec:authorize="hasAuthority('ROLE_MANAGER')">
         <span th:replace="layouts/manager_navbar :: manager_navbar"></span>
