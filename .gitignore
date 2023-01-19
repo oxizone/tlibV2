@@ -9,3 +9,4 @@ projectName.iml
 /build
 /local.properties
 target/
+resources/application.properties

@@ -27,9 +27,6 @@ public class TlibApplication implements CommandLineRunner {
 	private final AddressService addressService;
 	private final RDVService rdvService;
 
-	public TlibApplication() {
-	}
-
 
 	public static void main(String[] args) {
 		SpringApplication.run(TlibApplication.class, args);

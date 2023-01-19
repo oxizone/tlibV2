@@ -6,6 +6,7 @@
     <title>Create account</title>
 </head>
 <body>
+<span th:replace="layouts/home_navbar :: home_navbar"></span>
 <div class="container py-5 h-100 w-50">
     <form name="f" th:action="@{/createUser}" method="post" th:object="${user}" novalidate>
         <!-- 2 column grid layout with text inputs for the first and last names -->
