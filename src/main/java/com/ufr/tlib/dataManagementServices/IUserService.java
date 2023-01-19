@@ -1,8 +1,11 @@
 package com.ufr.tlib.dataManagementServices;
 
 import com.ufr.tlib.excepetions.UserNotFoundException;
+import com.ufr.tlib.models.Local;
 import com.ufr.tlib.models.User;
 import org.springframework.dao.DataIntegrityViolationException;
+
+import java.util.List;
 
 public interface IUserService {
 
@@ -13,6 +16,9 @@ public interface IUserService {
     public User getUserById(long id) throws UserNotFoundException;
     public User getUserByUserName(String username) throws UserNotFoundException;
     public boolean isUsernameExists(User user);
+    public List<User> getListUsers();
+    public void enableUser(long id) throws UserNotFoundException;
+    public void disableUser(long id) throws UserNotFoundException;
 }
 
 

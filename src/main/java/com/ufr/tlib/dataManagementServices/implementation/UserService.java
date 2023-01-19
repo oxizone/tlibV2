@@ -2,11 +2,15 @@ package com.ufr.tlib.dataManagementServices.implementation;
 
 import com.ufr.tlib.dataManagementServices.IUserService;
 import com.ufr.tlib.excepetions.UserNotFoundException;
+import com.ufr.tlib.models.Etat;
+import com.ufr.tlib.models.Local;
 import com.ufr.tlib.models.User;
 import com.ufr.tlib.repository.IUserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService implements IUserService {
@@ -32,8 +36,7 @@ public class UserService implements IUserService {
 
     @Override
     public void deleteUserById(int id) throws UserNotFoundException {
-        User user = this.getUserById(id);
-        userDao.delete(user);
+        userDao.deleteById((long) id);
     }
 
     @Override
@@ -50,4 +53,23 @@ public class UserService implements IUserService {
     public boolean isUsernameExists(User user) {
         return userDao.getUserByUsername(user.getUsername()) != null;
     }
+
+    @Override
+    public List<User> getListUsers() {
+        return userDao.findAll();
+    }
+
+    public void enableUser(long id) throws UserNotFoundException {
+        User u = getUserById(id);
+        u.setEnabled(true);
+        userDao.save(u);
+    }
+
+    public void disableUser(long id) throws UserNotFoundException {
+        User u = getUserById(id);
+        u.setEnabled(false);
+        userDao.save(u);
+    }
+
+
 }

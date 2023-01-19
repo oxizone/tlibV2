@@ -24,6 +24,7 @@ public interface ILocalService {
     public Local getLocal(long id);
     public void updateLocal(Local local);
 
-    public void disableLocal(Local local);
-    public void enableLocal(Local local);
+    public void disableLocal(long id);
+    public void enableLocal(long id);
+    public void deleteLocal(long id);
 }

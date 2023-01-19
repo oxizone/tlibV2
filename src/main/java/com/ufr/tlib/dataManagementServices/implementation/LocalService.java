@@ -90,15 +90,22 @@ public class LocalService implements ILocalService {
     }
 
     @Override
-    public void disableLocal(Local local) {
+    public void disableLocal(long id) {
+        Local local = getLocal(id);
         local.setEtat(Etat.DISABLE);
         localDao.save(local);
     }
 
     @Override
-    public void enableLocal(Local local) {
+    public void enableLocal(long id) {
+        Local local = getLocal(id);
         local.setEtat(Etat.ENABLE);
         localDao.save(local);
+    }
+
+    @Override
+    public void deleteLocal(long id) {
+        localDao.deleteById(id);
     }
 
 }
