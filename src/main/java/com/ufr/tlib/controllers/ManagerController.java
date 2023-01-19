@@ -1,15 +1,9 @@
 package com.ufr.tlib.controllers;
 
-import com.ufr.tlib.dataManagementServices.IArtisanService;
-import com.ufr.tlib.dataManagementServices.ILocalService;
-import com.ufr.tlib.dataManagementServices.IUserService;
-import com.ufr.tlib.dataManagementServices.IAbsenceService;
+import com.ufr.tlib.dataManagementServices.*;
 import com.ufr.tlib.excepetions.ArtisanNotFound;
 import com.ufr.tlib.excepetions.UserNotFoundException;
-import com.ufr.tlib.models.Absence;
-import com.ufr.tlib.models.Artisan;
-import com.ufr.tlib.models.Local;
-import com.ufr.tlib.models.Service;
+import com.ufr.tlib.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -19,14 +13,21 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/manager")
 public class ManagerController {
 
+    public static final String MANAGER_LOCAL = "/manager/local/";
     private final String root = "manager/";
+    private final String IMAGE_FOLDER = "/static/artisan_image/";
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd-hh-mm-ss");
 
     @Autowired
     private IUserService userService;
@@ -34,6 +35,8 @@ public class ManagerController {
     private ILocalService localService;
     @Autowired
     private IArtisanService artisanService;
+    @Autowired
+    private IPrestationService prestationService;
 
     @Autowired
     private IAbsenceService absenceService;
@@ -104,23 +107,27 @@ public class ManagerController {
          }
          localService.updateLocal(local);
 
-         return "redirect:/manager/local/"+local.getId();
+         return "redirect:"+MANAGER_LOCAL+local.getId();
      }
 
+     //// Artisant
      @PostMapping("/artisan")
      @ResponseBody
-    public String addArtisan(@RequestParam("localId") Long idLocal,@RequestParam("fName") String fName, @RequestParam("lName") String lName, @RequestParam("avatar") String avatar,Model model){
-         Local local = Local.builder()
+    public String addArtisan(@RequestParam("localId") long idLocal, @RequestParam("fName") String fName,@RequestParam("lName") String lName) throws IOException {
+
+
+        Local local = Local.builder()
                  .id(idLocal)
                  .build();
         Artisan artisan = Artisan.builder()
                  .firstName(fName)
                  .lastName(lName)
-                 .avatar(avatar)
+                 .avatar("")
                  .local(local)
                  .build();
-         artisanService.addArtisan(artisan);
-         return "/manager/local/"+idLocal;
+        artisanService.addArtisan(artisan);
+
+         return MANAGER_LOCAL+idLocal;
      }
 
     @PutMapping("/artisan")
@@ -132,7 +139,7 @@ public class ManagerController {
         artisan.setFirstName(fName);
         artisan.setLastName(lName);
         artisanService.updateArtisan(artisan);
-        return "/manager/local/"+artisan.getLocal().getId();
+        return MANAGER_LOCAL+artisan.getLocal().getId();
     }
 
     @DeleteMapping("/artisan")
@@ -171,5 +178,32 @@ public class ManagerController {
             return HttpStatus.CONFLICT;
     }
 
-}
+    @GetMapping("/artisant/absence/{id}")
+    @ResponseBody
+    public List<Absence> listeAbsence(@PathVariable("id") Long artisanId, Principal principal) throws ArtisanNotFound {
 
+        Artisan artisan = artisanService.getArtisanById(artisanId);
+
+        return artisan.getAbsences();
+    }
+
+
+    //// Prestation
+
+    @PostMapping("/prestation")
+    @ResponseBody
+    public String addPrestation(@RequestParam("localId") Long idLocal,@RequestParam("titre") String titre, @RequestParam("description") String description, @RequestParam("duration") int duration, @RequestParam("price") double price,Model model){
+        Local local = Local.builder()
+                .id(idLocal)
+                .build();
+        Prestation prestation = Prestation.builder()
+                .titre(titre)
+                .description(description)
+                .duration(duration)
+                .price(price)
+                .local(local)
+                .build();
+        prestationService.addPrestation(prestation);
+        return MANAGER_LOCAL +idLocal;
+    }
+}
