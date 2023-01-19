@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <span th:replace="layouts/head :: head"></span>
+    <title>Liste rdvs</title>
+</head>
+<body style="background: #eee">
+<span th:replace="client/client_navbar :: user_navbar"></span>
+<div class="container">
+
+    <h1 class="display-4">Mes Rdvs</h1>
+    <section class="rdvs-list">
+        <div class="rdv" th:each="rdv : ${rdvs}">
+            <div class="rdv-details">
+                <div class="prestation mb-2">
+                    <span class="prestation-name" th:text="${rdv.prestation.name}"></span>
+                    <span class="artisan text-muted" th:text="' Avec ' + ${rdv.artisan.firstName}"></span>
+                </div>
+                <h6 th:text="'Le '+${#temporals.format(rdv.date, 'dd-MM-yyyy à HH:mm')}"></h6>
+            </div>
+            <div class="rdv-actions">
+                <button  class="btn-dark btn">annuler rdv</button>
+            </div>
+        </div>
+    </section>
+</div>
+<hr>
+<span th:replace="layouts/footer :: footer"></span>
+<span th:replace="layouts/foot :: foot"></span>
+</body>

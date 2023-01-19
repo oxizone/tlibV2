@@ -68,6 +68,7 @@ public class User {
     @OneToOne(mappedBy = "local")
     @JoinColumn(name = "address_id")
     private Address adresse;
+
     @ManyToOne
     private Role role;
 
