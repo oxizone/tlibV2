@@ -6,6 +6,8 @@
     <title>Liste des locaux</title>
 </head>
 <body>
+    <span th:replace="layouts/admin_navbar :: admin_navbar"></span>
+
     <div data-th-if="${param.updateSuccess!= null}" class="alert  alert-success fade show alert-dismissible" role="alert" data-mdb-color="success" id="customxD" bis_skin_checked="1">
         <strong>Le local est modifié </strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
