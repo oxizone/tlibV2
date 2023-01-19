@@ -8,6 +8,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+
 
 @SpringBootApplication(scanBasePackages= {"com.ufr.tlib"})
 @RequiredArgsConstructor
@@ -21,7 +24,7 @@ public class TlibApplication implements CommandLineRunner {
 
 	private final PrestationService prestationService;
 	private final AddressService addressService;
-
+	private final RDVService rdvService;
 
 
 	public static void main(String[] args) {
@@ -107,6 +110,13 @@ public class TlibApplication implements CommandLineRunner {
 				.local(sallonCoiffure2)
 				.build();
 
+		RDV rdv = RDV.builder()
+				.artisan(artisan)
+				.prestation(coiffure)
+				.client(user)
+				.date(LocalDateTime.of(2023, Month.JANUARY, 23, 9, 30, 00, 000000))
+				.build();
+
 		roleRepository.save(managerRole);
 		roleRepository.save(userRole);
 		userService.addUser(manager);
@@ -121,5 +131,7 @@ public class TlibApplication implements CommandLineRunner {
 		prestationService.addPrestation(coiffure);
 		addressService.addAddress(address);
 		addressService.addAddress(addres2);
+
+		rdvService.addRDV(rdv);
 	}
 }

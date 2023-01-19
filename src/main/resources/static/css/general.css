@@ -174,3 +174,29 @@ footer{
         text-align: center;
     }
 }
+
+
+/*****************************************/
+/* RDVS page******************************/
+.rdvs-list {
+    min-height: 800px;
+}
+
+.rdv {
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.prestation-name {
+    font-size: 26px;
+}
+
+.rdv-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

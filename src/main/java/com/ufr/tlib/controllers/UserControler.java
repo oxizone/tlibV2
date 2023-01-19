@@ -7,10 +7,7 @@ import com.ufr.tlib.dataManagementServices.IPrestationService;
 import com.ufr.tlib.dataManagementServices.IUserService;
 import com.ufr.tlib.excepetions.PrestationNotFound;
 import com.ufr.tlib.excepetions.UserNotFoundException;
-import com.ufr.tlib.models.Artisan;
-import com.ufr.tlib.models.Local;
-import com.ufr.tlib.models.Prestation;
-import com.ufr.tlib.models.Service;
+import com.ufr.tlib.models.*;
 import com.ufr.tlib.repository.IPrestationDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.security.Principal;
 
 
 @Controller
@@ -105,6 +104,18 @@ public class UserControler {
             return "error/403";
         }
         return root + "reservation-step-2";
+    }
+
+
+    @GetMapping("/rdvs")
+    public String rdvsList(Principal principal,Model model) {
+        try {
+            User user = userService.getUserByUserName(principal.getName());
+            model.addAttribute("rdvs",user.getRDVs());
+        } catch (UserNotFoundException e) {
+            return "error/404";
+        }
+        return root + "rdvs-list";
     }
 
 }
