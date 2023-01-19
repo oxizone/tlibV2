@@ -26,11 +26,6 @@
             <td th:utext="${user.firstname}"></td>
             <td th:utext="${user.phone}"></td>
             <td >
-                <span>
-                    <a th:href="${'/admin/users/'+user.id}" id="edit">
-                        <button type="button" class="btn btn-primary">Informations</button>
-                    </a>
-                </span>
                 <span th:if="${user.enabled == true}">
                     <a th:href="${'/admin/users/bloquer/'+user.id}" id="edit">
                         <button type="button" class="btn btn-warning">Bloquer</button>
