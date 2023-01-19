@@ -18,5 +18,12 @@ public interface ILocalDao extends JpaRepository<Local, Long> {
     public List<Local> findLocalByEtat(Etat etat);
     public Page<Local> findLocalByNameContains(String keyword, Pageable page);
     public Page<Local> findLocalByNameContainsAndService(String keyword, Service service, Pageable page);
+    public Page<Local> findLocalByNameContainsAndAdresse_City(String keyword,String city, Pageable page);
+    public Page<Local> findLocalByServiceAndAdresse_City(Service service,String city, Pageable page);
+    public Page<Local> findLocalByNameContainsAndServiceAndAdresse_City(String keyword,Service service,String city, Pageable page);
+    public Page<Local> findLocalByAdresse_City(String city, Pageable page);
+    public Page<Local> findLocalByService(Service service, Pageable page);
+
+
 
 }

@@ -1,13 +1,16 @@
 package com.ufr.tlib;
 
-import com.ufr.tlib.dataManagementServices.implementation.LocalService;
-import com.ufr.tlib.dataManagementServices.implementation.UserService;
+
 import com.ufr.tlib.models.*;
+import com.ufr.tlib.dataManagementServices.implementation.*;
 import com.ufr.tlib.repository.IRoleDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.time.LocalDateTime;
+import java.time.Month;
 
 
 @SpringBootApplication(scanBasePackages= {"com.ufr.tlib"})
@@ -16,7 +19,16 @@ public class TlibApplication implements CommandLineRunner {
 
 	private final IRoleDao roleRepository;
 	private final LocalService localService;
+
+	private final ArtisanService artisanService;
 	private final UserService userService;
+
+	private final PrestationService prestationService;
+	private final AddressService addressService;
+	private final RDVService rdvService;
+
+	public TlibApplication() {
+	}
 
 
 	public static void main(String[] args) {
@@ -84,6 +96,42 @@ public class TlibApplication implements CommandLineRunner {
 				.name("L'atelier de coiffure")
 				.build();
 
+		Artisan artisan =  Artisan.builder()
+				.firstName("first")
+				.lastName("last")
+				.avatar("avat")
+				.local(sallonCoiffure)
+				.build();
+
+
+		Prestation coiffure = Prestation.builder()
+				.price(18)
+				.duration(45)
+				.titre("Coiffure simple")
+				.description("coiffure simple pour homme")
+				.local(sallonCoiffure)
+				.build();
+
+		Address address = Address.builder()
+				.city("Besançon")
+				.zipCode("25000")
+				.local(sallonCoiffure)
+				.build();
+
+		Address addres2 = Address.builder()
+				.city("Besançon")
+				.zipCode("25000")
+				.local(sallonCoiffure2)
+				.build();
+
+		RDV rdv = RDV.builder()
+				.artisan(artisan)
+				.prestation(coiffure)
+				.client(user)
+				.date(LocalDateTime.of(2023, Month.JANUARY, 23, 9, 30, 00, 000000))
+				.build();
+
+		roleRepository.save(managerRole);
 		roleRepository.save(userRole);
 		roleRepository.save(managerRole);
 		roleRepository.save(adminRole);
@@ -93,5 +141,13 @@ public class TlibApplication implements CommandLineRunner {
 
 		localService.addLocal(sallonCoiffure,manager.getUsername());
 		localService.addLocal(sallonCoiffure2,manager.getUsername());
+
+		artisanService.addArtisan(artisan);
+
+		prestationService.addPrestation(coiffure);
+		addressService.addAddress(address);
+		addressService.addAddress(addres2);
+
+		rdvService.addRDV(rdv);
 	}
 }

@@ -1,10 +1,13 @@
 package com.ufr.tlib.dataManagementServices.implementation;
 
 import com.ufr.tlib.dataManagementServices.IUserService;
+import com.ufr.tlib.excepetions.RoleNotFoundException;
 import com.ufr.tlib.excepetions.UserNotFoundException;
+import com.ufr.tlib.models.Role;
 import com.ufr.tlib.models.Etat;
 import com.ufr.tlib.models.Local;
 import com.ufr.tlib.models.User;
+import com.ufr.tlib.repository.IRoleDao;
 import com.ufr.tlib.repository.IUserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,9 +22,15 @@ public class UserService implements IUserService {
     @Autowired
     private IUserDao userDao;
 
+    @Autowired
+    private IRoleDao roleDao;
+
     @Override
-    public void addUser(User user) throws DataIntegrityViolationException {
-        userDao.save(user);
+    public void addUser(User user) throws DataIntegrityViolationException, RoleNotFoundException {
+        Role role = roleDao.findRoleByRoleName(user.getRole().getRoleName()).orElseThrow(RoleNotFoundException::new);
+            user.setRole(role);
+            userDao.save(user);
+
     }
 
     @Override
@@ -72,4 +81,10 @@ public class UserService implements IUserService {
     }
 
 
+
+    @Override
+    public void disabledUser(User user){
+        user.setEnabled(false);
+        userDao.save(user);
+    }
 }

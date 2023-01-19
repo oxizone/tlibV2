@@ -63,7 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .sameOrigin()
                 .and()
                     .formLogin()
-        //        .loginPage("/login")
+                    .loginPage("/login")
                     .permitAll()
         ;
     }

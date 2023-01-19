@@ -3,13 +3,17 @@ package com.ufr.tlib.models;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -39,6 +43,8 @@ public class User {
     @Email(message = "Invalide email")
     private String email; // Adresse email valide (format X@Y.Z)
 
+
+
     @Column
     @NotBlank(message = "This field is required")
     private String lastname;
@@ -51,13 +57,17 @@ public class User {
     @NotBlank(message = "This field is required")
     private String phone;
 
-    private boolean enabled = false;
+    private boolean enabled = true;
 
     @OneToMany(mappedBy = "manager")
     private List<Local> managedLocals;
 
     @OneToMany(mappedBy = "client")
     private List<RDV> RDVs;
+
+    @OneToOne(mappedBy = "local")
+    @JoinColumn(name = "address_id")
+    private Address adresse;
 
     @ManyToOne
     private Role role;

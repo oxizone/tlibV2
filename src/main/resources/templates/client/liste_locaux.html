@@ -7,23 +7,51 @@
 </head>
 <body style="background: #eee">
 <span th:replace="client/client_navbar :: user_navbar"></span>
+
+<form class="p-3 locaux-fliter" th:action="@{locaux}" th:method="get" style="background:#fff">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Quel est le nom du local rerché?"
+                        aria-label="Search"
+                        th:value="${keyword}"
+                        name="keyword"
+                />
+            </div>
+            <div class="col-md-4 mb-2">
+                <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Dans quelle ville vous cheechez le local?"
+                        name="city"
+                        th:value="${city}"
+                />
+            </div>
+
+
+
+            <div class="col-md-2 mb-2">
+                <select class="form-select" name="service">
+                    <option th:value="${service}"  selected disabled hidden>All Services</option>
+                    <option th:each="service : ${T(com.ufr.tlib.models.Service).values()}"
+                            th:value="${service}"
+                            th:text="${service}">
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-2 mb-2">
+                <button class="btn btn-outline-secondary ml-2">Search</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
 <div class="container">
     <div class="locaux-list">
-        <form class="form-inline d-flex justify-content-center md-form form-sm mt-4" th:action="@{locaux}" th:method="get">
-            <i class="fas fa-search" aria-hidden="true"></i>
-            <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search"
-                   aria-label="Search" name="keyword" th:value="${keyword}">
-
-            <select name="service" class="ml-2" >
-                <option th:value="${service}"  selected disabled hidden>All Services</option>
-                <option th:each="service : ${T(com.ufr.tlib.models.Service).values()}"
-                        th:value="${service}"
-                        th:text="${service}">
-                </option>
-            </select>
-            <button class="btn btn-outline-secondary ml-2"> Search</button>
-        </form>
-
         <h6 class="mb-6">
             <span th:text="${locaux.size()}"></span>
             local disponible
@@ -41,7 +69,10 @@
                         <p class="card-text  local-bagde">
                             <span class="badge badge-secondary" th:text="${local.service}"></span>
                         </p>
-                        <p class="local-description" th:text="${local.description}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus beatae doloribus impedit repudiandae dolorum ut eius aliquam modi saepe! Ipsum!</p>
+                       <!-- <p class="local-description" th:text="${local.description}"></p> -->
+                        <p class="local-city">
+                            <i class="fa-light fa-location-dot"></i>
+                            <span th:text="${local.adresse.city}"></span>
                         </p>
                         <a th:href="${'/user/locaux/'+local.id}" class=" text-center btn btn-outline-primary center">details</a>
                     </div>
@@ -58,6 +89,7 @@
         </ul>
     </div>
 </div>
+<span th:replace="layouts/footer :: footer"></span>
 <span th:replace="layouts/foot :: foot"></span>
 </body>
 </html>

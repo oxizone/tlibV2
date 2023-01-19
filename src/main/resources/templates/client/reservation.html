@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <span th:replace="layouts/head :: head"></span>
+    <title>Liste des locaux</title>
+</head>
+<body>
+<span th:replace="client/client_navbar :: user_navbar"></span>
+
+<div class="container" style="min-height: 800px">
+    <section class="local-infos mb-3">
+        <h1 class="display-4" th:text="${local.name}"></h1>
+        <p class="card-text local-bagde">
+            <span class="badge badge-secondary" th:text="${local.service}"></span>
+        </p>
+    </section>
+
+    <section class="presation-section mb-3">
+        <h6><span class="text-primary">1-</span>Prestation selectionné</h6>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="prestation-card">
+                    <h6 th:text="${prestation.name}"></h6>
+
+                    <div class="prestation-details">
+                        <span class="muted-text" th:text="${prestation.price}+ ' €'"></span>
+                        <span class="muted-text">-</span>
+                        <span class="muted-text" th:text="${prestation.duration} + ' min'"></span>
+                        <a class="btn btn-dark" th:href="@{'/user/locaux/' + ${local.id}}"
+                        >Abandonner</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="choix-artisans mb-3">
+        <h6><span class="text-primary">2-</span>Choix de l'artison</h6>
+        <div class="artisans-container card p-3">
+            <div class=" g-2">
+                <a th:href="@{'/user/locaux/' + ${local.id} + '/services/' + ${prestation.id} + '/artisans/'+${artisan.id}+'/reservation'}" class="artisan-card col-lg-4 col-sm-6 p-2" th:each="artisan : ${artisans}">
+                    <div id="profileImage"></div>
+                    <span id="artisan-name" th:text="${artisan.firstName}+ ' '+${artisan.lastName}"</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="disponibilite-section">
+
+    </section>
+
+</div>
+
+
+
+<span th:replace="layouts/footer :: footer"></span>
+<span th:replace="layouts/foot :: foot"></span>
+
+<script>
+    const fullName = document.getElementById("artisan-name").textContent;
+    const intials = fullName
+        .split(" ")
+        .map((name) => name[0])
+        .join("")
+        .toUpperCase();
+    document.getElementById("profileImage").innerHTML = intials;
+</script>
+</body>
+</html>

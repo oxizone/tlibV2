@@ -5,7 +5,7 @@
 
 /**** Liste des locaux - Client ******/
 .locaux-list-item {
-    height: 400px;
+    height: 360px;
     overflow: hidden;
     margin-bottom: 10px;
 }
@@ -22,4 +22,181 @@
 a, a:hover{
     color: inherit;
     text-decoration: none;
+}
+
+.locaux-list{
+    min-height: 800px;
+}
+
+.locaux-fliter{
+    margin-bottom: 10px;
+}
+/******************************/
+
+.hero-section .img-container {
+    height: 300px;
+    width: 100%;
+    background-color: #eee;
+    border-radius: 10px;
+}
+
+
+/****************************/
+.client-navbar{
+    -webkit-box-shadow: 0 8px 6px -6px #999;
+    -moz-box-shadow: 0 8px 6px -6px #999;
+    box-shadow: 0 8px 6px -6px #999;
+    background: #fff;
+}
+
+footer{
+    background: #fff;
+}
+
+/*** local details page ****/
+.prestation-cards-container {
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.prestation-card {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    border: 0.23px solid rgb(134, 134, 134);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.prestation-details span {
+    margin-right: 10px;
+    display: inline-block;
+}
+
+/********* Reservation page ******************/
+.artisan-card {
+    border-radius: 3px;
+    border: 0.5px solid rgb(160, 160, 160);
+    display: flex;
+    align-items: center;
+}
+
+.artisan-card:hover {
+    background-color: rgb(239, 239, 239);
+}
+
+#profileImage {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #000;
+    font-size: 24px;
+    color: #fff;
+    text-align: center;
+    line-height: 45px;
+    margin-right: 10px;
+}
+
+.disponibilty {
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+}
+
+.week-day {
+    width: 12%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.creneau {
+    background-color: rgb(216, 216, 216);
+    width: 100%;
+    margin: 5px;
+    border-radius: 3px;
+    padding: 5px;
+    text-align: center;
+}
+
+/*.creneau:hover {*/
+/*    background-color: rgb(201, 201, 201);*/
+/*}*/
+
+.creneau-selected {
+    background-color: black;
+    color: #eee;
+}
+
+.creneau-reserve {
+    background-color: rgb(245, 245, 245);
+    cursor: not-allowed;
+}
+
+.actions-section {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+@media (max-width: 1000px) {
+    .week-day {
+        width: 14%;
+    }
+}
+
+@media (max-width: 750px) {
+    .week-day {
+        width: 14%;
+    }
+
+    .disponibilty {
+        flex-direction: column;
+    }
+
+    .week-day {
+        text-align: center;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid black;
+        margin: 5px;
+    }
+
+    .creneau {
+        background-color: rgb(216, 216, 216);
+        width: 30%;
+        margin: 5px;
+        border-radius: 3px;
+        padding: 5px;
+        text-align: center;
+    }
+}
+
+
+/*****************************************/
+/* RDVS page******************************/
+.rdvs-list {
+    min-height: 800px;
+}
+
+.rdv {
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.prestation-name {
+    font-size: 26px;
+}
+
+.rdv-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
